@@ -108,14 +108,6 @@ export default function LoginPage() {
           Register
         </Link>
       </p>
-      <p className="mt-4 text-center text-sm">
-        <Link
-          href="/admin/login"
-          className="font-medium text-cyan-600 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-300"
-        >
-          Super admin console →
-        </Link>
-      </p>
     </div>
   );
 }

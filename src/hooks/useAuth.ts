@@ -20,7 +20,11 @@ export function useAuth() {
       store.setAuth(user, tokens);
       await queryClient.invalidateQueries();
       toast.success(`Welcome back, ${user.fullName.split(' ')[0] ?? user.username}!`);
-      router.push('/feed');
+      if (user.role === 'super_admin' || user.role === 'moderator') {
+        router.push('/admin/dashboard');
+      } else {
+        router.push('/feed');
+      }
     } catch (err) {
       const msg = getApiError(err);
       toast.error(msg);
