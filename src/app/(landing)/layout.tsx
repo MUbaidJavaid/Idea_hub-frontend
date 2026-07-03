@@ -15,7 +15,7 @@ export default function LandingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="landing-scrollbar min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100 text-slate-900 transition-colors duration-300 dark:from-slate-950 dark:via-slate-950 dark:to-black dark:text-slate-100">
+    <div className="landing-scrollbar relative min-h-screen overflow-x-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <LandingHeader />
       <main>{children}</main>
       <LandingFooter />

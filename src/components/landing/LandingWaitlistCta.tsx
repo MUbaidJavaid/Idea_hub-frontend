@@ -4,6 +4,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { LandingSection } from './LandingSection';
+
 export function LandingWaitlistCta() {
   const reduce = useReducedMotion();
   const [email, setEmail] = useState('');
@@ -25,18 +27,18 @@ export function LandingWaitlistCta() {
   }
 
   return (
-    <section
-      className="px-4 pb-24 pt-4 md:px-6 md:pb-32"
-      aria-labelledby="waitlist-heading"
+    <LandingSection
+      ariaLabelledBy="waitlist-heading"
+      className="pb-24 md:pb-32"
     >
       <motion.div
-        initial={reduce ? false : { opacity: 0, y: 22 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={reduce ? false : { opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.55 }}
-        className="relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] border border-white/25 bg-gradient-to-br from-slate-900 via-brand-900 to-violet-950 p-px dark:from-slate-950 dark:via-indigo-950 dark:to-slate-950"
+        className="relative mx-auto max-w-4xl overflow-hidden rounded-xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-brand-900 to-violet-950"
       >
-        <div className="rounded-[calc(2rem-1px)] bg-gradient-to-br from-brand-600/90 via-violet-700/95 to-indigo-900 px-6 py-12 text-center md:px-12 md:py-16">
+        <div className="rounded-xl bg-gradient-to-br from-brand-600 via-violet-700 to-indigo-900 px-6 py-12 text-center md:px-12 md:py-16">
           <h2
             id="waitlist-heading"
             className="text-2xl font-bold tracking-tight text-white md:text-3xl lg:text-4xl"
@@ -44,8 +46,7 @@ export function LandingWaitlistCta() {
             Ready to shape the future?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm text-white/85 md:text-base">
-            Get early access to enterprise workspaces, investor digests, and API hooks, reserved for
-            teams scaling on Idea Hub.
+            Get early access to enterprise workspaces, investor digests, and API hooks.
           </p>
           <form
             onSubmit={onSubmit}
@@ -63,12 +64,12 @@ export function LandingWaitlistCta() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
-              className="min-h-[52px] flex-1 rounded-xl border border-white/25 bg-white/10 px-4 text-sm text-white placeholder:text-white/50 backdrop-blur-md focus:border-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
+              className="min-h-[52px] flex-1 rounded-lg border border-white/25 bg-white/10 px-4 text-sm text-white placeholder:text-white/50 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20"
             />
             <button
               type="submit"
               disabled={busy}
-              className="min-h-[52px] rounded-xl bg-white px-8 text-sm font-bold text-brand-800 ring-1 ring-white/20 transition hover:bg-slate-50 disabled:opacity-60"
+              className="min-h-[52px] rounded-lg bg-white px-8 text-sm font-semibold text-brand-800 transition hover:bg-slate-50 disabled:opacity-60"
             >
               {busy ? 'Joining…' : 'Join waitlist'}
             </button>
@@ -76,6 +77,6 @@ export function LandingWaitlistCta() {
           <p className="mt-4 text-xs text-white/70">No spam, only launch and roadmap updates.</p>
         </div>
       </motion.div>
-    </section>
+    </LandingSection>
   );
 }

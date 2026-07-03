@@ -21,12 +21,11 @@ const nav = [
 function LogoMark() {
   return (
     <span
-      className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-400/20 ring-2 ring-amber-400/50 dark:bg-amber-400/15 dark:ring-amber-300/40"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-400/15 ring-1 ring-amber-400/40 dark:bg-amber-400/10 dark:ring-amber-300/30"
       aria-hidden
     >
-      <span className="absolute inset-0 rounded-xl bg-amber-400/25 blur-md dark:bg-amber-300/20" />
       <Lightbulb
-        className="relative h-[1.15rem] w-[1.15rem] text-amber-500 dark:text-amber-300"
+        className="h-[1.15rem] w-[1.15rem] text-amber-600 dark:text-amber-300"
         strokeWidth={2.25}
       />
     </span>
@@ -48,7 +47,7 @@ export function LandingHeader() {
   }, [open]);
 
   return (
-    <header className="landing-scrollbar sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl dark:border-white/5 dark:bg-slate-950/85">
+    <header className="landing-scrollbar sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:px-6">
         <Link
           href="/"
@@ -80,7 +79,7 @@ export function LandingHeader() {
           </Link>
           <Link
             href="/register"
-            className="rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 px-4 py-2 text-sm font-bold text-white ring-1 ring-indigo-600/40 transition hover:brightness-105 dark:ring-indigo-400/35"
+            className="rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 px-4 py-2 text-sm font-bold text-white transition hover:opacity-90 dark:from-brand-500 dark:to-violet-500"
           >
             Sign up
           </Link>

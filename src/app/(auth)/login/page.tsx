@@ -6,17 +6,21 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { Button } from '@/components/ui/Button';
+import { AuthField } from '@/components/auth/AuthField';
+import { AuthShell } from '@/components/auth/AuthShell';
 import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 import { useAuth } from '@/hooks/useAuth';
 
 const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email('Enter a valid email'),
   password: z.string().min(1, 'Password is required'),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
+
+const inputClass =
+  'rounded-xl border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-900';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -38,61 +42,65 @@ export default function LoginPage() {
   });
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-[var(--text)]">Welcome back</h1>
-      <p className="mt-1 text-sm text-[var(--text-muted)]">
-        Sign in to Ideas Hub
-      </p>
-      <form className="mt-8 space-y-4" onSubmit={onSubmit}>
-        <div>
-          <label className="text-sm font-medium text-[var(--text)]">
-            Email
-          </label>
+    <AuthShell
+      variant="login"
+      footer={
+        <>
+          No account?{' '}
+          <Link
+            href="/register"
+            className="font-semibold text-brand-700 hover:underline dark:text-indigo-300"
+          >
+            Create one
+          </Link>
+        </>
+      }
+    >
+      <form className="space-y-5" onSubmit={onSubmit} noValidate>
+        <AuthField
+          label="Email"
+          error={form.formState.errors.email?.message}
+        >
           <Input
             type="email"
             autoComplete="email"
-            className="mt-1"
+            placeholder="you@example.com"
+            className={inputClass}
             {...form.register('email')}
           />
-          {form.formState.errors.email ? (
-            <p className="mt-1 text-sm text-red-600">
-              {form.formState.errors.email.message}
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-[var(--text)]">
-              Password
-            </label>
+        </AuthField>
+
+        <AuthField
+          label="Password"
+          error={form.formState.errors.password?.message}
+          action={
             <button
               type="button"
-              className="text-xs text-brand"
+              className="text-xs font-medium text-brand-700 hover:underline dark:text-indigo-300"
               onClick={() => setShowPw((s) => !s)}
             >
               {showPw ? 'Hide' : 'Show'}
             </button>
-          </div>
+          }
+        >
           <Input
             type={showPw ? 'text' : 'password'}
             autoComplete="current-password"
-            className="mt-1"
+            placeholder="Your password"
+            className={inputClass}
             {...form.register('password')}
           />
-          {form.formState.errors.password ? (
-            <p className="mt-1 text-sm text-red-600">
-              {form.formState.errors.password.message}
-            </p>
-          ) : null}
-        </div>
+        </AuthField>
+
         {apiError ? (
-          <p className="text-sm text-red-600" role="alert">
+          <p className="text-sm text-red-600 dark:text-red-400" role="alert">
             {apiError}
           </p>
         ) : null}
-        <Button
+
+        <button
           type="submit"
-          className="w-full"
+          className="landing-btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
           disabled={form.formState.isSubmitting}
         >
           {form.formState.isSubmitting ? (
@@ -100,14 +108,8 @@ export default function LoginPage() {
           ) : (
             'Sign in'
           )}
-        </Button>
+        </button>
       </form>
-      <p className="mt-6 text-center text-sm text-[var(--text-muted)]">
-        No account?{' '}
-        <Link href="/register" className="font-medium text-brand">
-          Register
-        </Link>
-      </p>
-    </div>
+    </AuthShell>
   );
 }
