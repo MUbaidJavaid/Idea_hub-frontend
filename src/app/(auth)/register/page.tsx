@@ -7,7 +7,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { Button } from '@/components/ui/Button';
+import { AuthField } from '@/components/auth/AuthField';
+import { AuthShell } from '@/components/auth/AuthShell';
 import { Input } from '@/components/ui/Input';
 import { Spinner } from '@/components/ui/Spinner';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,11 +17,11 @@ const registerSchema = z
   .object({
     username: z
       .string()
-      .min(3)
+      .min(3, 'At least 3 characters')
       .max(30)
-      .regex(/^[a-z0-9][a-z0-9_-]*$/i, 'Invalid username'),
-    fullName: z.string().min(1).max(120),
-    email: z.string().email(),
+      .regex(/^[a-z0-9][a-z0-9_-]*$/i, 'Letters, numbers, _ and - only'),
+    fullName: z.string().min(1, 'Full name is required').max(120),
+    email: z.string().email('Enter a valid email'),
     password: z.string().min(8, 'At least 8 characters'),
     confirmPassword: z.string(),
   })
@@ -30,6 +31,9 @@ const registerSchema = z
   });
 
 type RegisterForm = z.infer<typeof registerSchema>;
+
+const inputClass =
+  'rounded-xl border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-900';
 
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
@@ -70,93 +74,123 @@ export default function RegisterPage() {
   });
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-[var(--text)]">Create account</h1>
-      <p className="mt-1 text-sm text-[var(--text-muted)]">
-        Join Ideas Hub today
-      </p>
-      <form className="mt-8 space-y-4" onSubmit={onSubmit}>
-        <div>
-          <label className="text-sm font-medium">Username</label>
-          <Input className="mt-1" {...form.register('username')} />
-          {form.formState.errors.username ? (
-            <p className="mt-1 text-sm text-red-600">
-              {form.formState.errors.username.message}
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <label className="text-sm font-medium">Full name</label>
-          <Input className="mt-1" {...form.register('fullName')} />
-          {form.formState.errors.fullName ? (
-            <p className="mt-1 text-sm text-red-600">
-              {form.formState.errors.fullName.message}
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <label className="text-sm font-medium">Email</label>
-          <Input type="email" className="mt-1" {...form.register('email')} />
-          {form.formState.errors.email ? (
-            <p className="mt-1 text-sm text-red-600">
-              {form.formState.errors.email.message}
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <div className="flex justify-between">
-            <label className="text-sm font-medium">Password</label>
+    <AuthShell
+      variant="register"
+      footer={
+        <>
+          Already have an account?{' '}
+          <Link
+            href="/login"
+            className="font-semibold text-brand-700 hover:underline dark:text-indigo-300"
+          >
+            Sign in
+          </Link>
+        </>
+      }
+    >
+      <form className="space-y-4" onSubmit={onSubmit} noValidate>
+        <AuthField
+          label="Username"
+          error={form.formState.errors.username?.message}
+        >
+          <Input
+            autoComplete="username"
+            placeholder="yourname"
+            className={inputClass}
+            {...form.register('username')}
+          />
+        </AuthField>
+
+        <AuthField
+          label="Full name"
+          error={form.formState.errors.fullName?.message}
+        >
+          <Input
+            autoComplete="name"
+            placeholder="Jane Doe"
+            className={inputClass}
+            {...form.register('fullName')}
+          />
+        </AuthField>
+
+        <AuthField
+          label="Email"
+          error={form.formState.errors.email?.message}
+        >
+          <Input
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            className={inputClass}
+            {...form.register('email')}
+          />
+        </AuthField>
+
+        <AuthField
+          label="Password"
+          error={form.formState.errors.password?.message}
+          action={
             <button
               type="button"
-              className="text-xs text-brand"
+              className="text-xs font-medium text-brand-700 hover:underline dark:text-indigo-300"
               onClick={() => setShowPw((s) => !s)}
             >
               {showPw ? 'Hide' : 'Show'}
             </button>
-          </div>
+          }
+        >
           <Input
             type={showPw ? 'text' : 'password'}
-            className="mt-1"
+            autoComplete="new-password"
+            placeholder="At least 8 characters"
+            className={inputClass}
             {...form.register('password')}
           />
-          {form.formState.errors.password ? (
-            <p className="mt-1 text-sm text-red-600">
-              {form.formState.errors.password.message}
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <label className="text-sm font-medium">Confirm password</label>
+        </AuthField>
+
+        <AuthField
+          label="Confirm password"
+          error={form.formState.errors.confirmPassword?.message}
+        >
           <Input
             type={showPw ? 'text' : 'password'}
-            className="mt-1"
+            autoComplete="new-password"
+            placeholder="Repeat password"
+            className={inputClass}
             {...form.register('confirmPassword')}
           />
-          {form.formState.errors.confirmPassword ? (
-            <p className="mt-1 text-sm text-red-600">
-              {form.formState.errors.confirmPassword.message}
-            </p>
-          ) : null}
-        </div>
+        </AuthField>
+
         {apiError ? (
-          <p className="text-sm text-red-600" role="alert">
+          <p className="text-sm text-red-600 dark:text-red-400" role="alert">
             {apiError}
           </p>
         ) : null}
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+
+        <button
+          type="submit"
+          className="landing-btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={form.formState.isSubmitting}
+        >
           {form.formState.isSubmitting ? (
             <Spinner size="sm" className="border-white border-t-transparent" />
           ) : (
-            'Register'
+            'Create account'
           )}
-        </Button>
+        </button>
+
+        <p className="text-center text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+          By registering you agree to our{' '}
+          <Link href="/terms" className="text-brand-700 hover:underline dark:text-indigo-300">
+            Terms
+          </Link>{' '}
+          and{' '}
+          <Link href="/privacy" className="text-brand-700 hover:underline dark:text-indigo-300">
+            Privacy Policy
+          </Link>
+          .
+        </p>
       </form>
-      <p className="mt-6 text-center text-sm text-[var(--text-muted)]">
-        Already have an account?{' '}
-        <Link href="/login" className="font-medium text-brand">
-          Log in
-        </Link>
-      </p>
-    </div>
+    </AuthShell>
   );
 }

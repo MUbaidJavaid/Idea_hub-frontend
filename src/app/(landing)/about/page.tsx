@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 
+import { LandingAvatar } from '@/components/landing/LandingAvatar';
 import { LegalDocument } from '@/components/landing/LegalDocument';
-import { LANDING_IMAGES } from '@/data/landing-media';
+import { LANDING_IMAGES, TEAM_AVATARS } from '@/data/landing-media';
 
 export const metadata: Metadata = {
   title: 'About | Idea Hub',
@@ -16,25 +16,25 @@ const team = [
     name: 'Daniel Okoro',
     role: 'CEO & Co-founder',
     bio: 'Former product lead at two B2B unicorns; obsessed with feedback loops between builders and capital.',
-    photo: LANDING_IMAGES.aboutTeam1,
+    avatar: TEAM_AVATARS.daniel,
   },
   {
     name: 'Sarah Lindqvist',
     role: 'CTO & Co-founder',
     bio: 'Distributed systems and trust & safety background; previously scaled realtime infra to 50M MAU.',
-    photo: LANDING_IMAGES.aboutTeam2,
+    avatar: TEAM_AVATARS.sarah,
   },
   {
     name: 'Michael Torres',
     role: 'Head of Community',
     bio: 'Built creator programs at major platforms; ensures Idea Hub stays constructive under growth.',
-    photo: LANDING_IMAGES.aboutTeam3,
+    avatar: TEAM_AVATARS.michael,
   },
   {
     name: 'Yuki Tanaka',
     role: 'Head of Design',
     bio: 'Information architecture for complex workflows; led design systems for global SaaS products.',
-    photo: LANDING_IMAGES.aboutTeam4,
+    avatar: TEAM_AVATARS.yuki,
   },
 ] as const;
 
@@ -147,11 +147,15 @@ export default function AboutPage() {
         {team.map((m) => (
           <li
             key={m.name}
-            className="flex gap-4 rounded-xl border border-slate-200/80 bg-white/50 p-5 dark:border-white/10 dark:bg-slate-900/25"
+            className="flex gap-4 rounded-xl rounded-tr-none border border-slate-200/80 bg-white/50 p-5 dark:border-white/10 dark:bg-slate-900/25"
           >
-            <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg">
-              <Image src={m.photo} alt={m.name} fill className="object-cover" sizes="80px" />
-            </div>
+            <LandingAvatar
+              initials={m.avatar.initials}
+              from={m.avatar.from}
+              to={m.avatar.to}
+              size="sm"
+              className="!h-20 !w-20 !rounded-xl !text-base"
+            />
             <div className="min-w-0">
               <p className="font-semibold text-slate-900 dark:text-white">{m.name}</p>
               <p className="text-sm text-brand-700 dark:text-indigo-300">{m.role}</p>

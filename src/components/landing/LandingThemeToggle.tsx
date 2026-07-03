@@ -13,7 +13,7 @@ export function LandingThemeToggle({ className }: { className?: string }) {
       type="button"
       onClick={() => toggle()}
       className={cn(
-        'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-slate-800 shadow-sm backdrop-blur-md transition hover:scale-105 hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 dark:border-white/10 dark:bg-white/5 dark:text-amber-100 dark:hover:bg-white/10',
+        'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-800 transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800',
         className
       )}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}

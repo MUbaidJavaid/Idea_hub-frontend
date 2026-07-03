@@ -15,12 +15,19 @@ export function LandingStatsBar() {
 
   return (
     <section
-      className="relative border-y border-white/10 bg-white/40 px-4 py-10 backdrop-blur-md dark:border-white/5 dark:bg-slate-950/40 md:px-6"
       aria-label="Platform statistics"
+      className="relative border-y border-slate-200 bg-slate-50 py-12 dark:border-slate-800 dark:bg-slate-900/30 md:py-14"
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-6">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:grid-cols-3 sm:gap-8 md:px-6">
         {stats.map((s, i) => (
-          <StatItem key={s.label} target={s.value} suffix={s.suffix} label={s.label} index={i} reduce={reduce} />
+          <StatItem
+            key={s.label}
+            target={s.value}
+            suffix={s.suffix}
+            label={s.label}
+            index={i}
+            reduce={reduce}
+          />
         ))}
       </div>
     </section>
@@ -44,23 +51,22 @@ function StatItem({
 
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={reduce ? false : { opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
+      transition={{ duration: 0.4, delay: index * 0.06 }}
       className="text-center"
     >
       <p
         ref={ref}
-        className="text-4xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white md:text-5xl"
+        className="text-3xl font-bold tabular-nums tracking-tight text-slate-900 dark:text-white sm:text-4xl md:text-5xl"
       >
         {value.toLocaleString()}
         {suffix}
       </p>
-      <p className="mt-2 text-sm font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
+      <p className="mt-2 text-sm font-medium text-slate-600 dark:text-slate-400">
         {label}
       </p>
-      <div className="mx-auto mt-4 h-px max-w-[120px] bg-gradient-to-r from-transparent via-brand-500/50 to-transparent dark:via-indigo-400/40" />
     </motion.div>
   );
 }
