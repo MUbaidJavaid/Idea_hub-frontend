@@ -284,4 +284,29 @@ export const ideasApi = {
     }
     return res.data.data;
   },
+
+  recordView: async (
+    id: string,
+    body?: { sessionId?: string; source?: string }
+  ) => {
+    const res = await api.post<ApiResponse<{ viewCount: number }>>(
+      `/ideas/${id}/view`,
+      body ?? {}
+    );
+    if (!res.data.success || !res.data.data) {
+      throw new Error(res.data.message || 'View failed');
+    }
+    return res.data.data;
+  },
+
+  shareIdea: async (
+    id: string,
+    body?: { sessionId?: string; source?: string }
+  ) => {
+    const res = await api.post<ApiResponse<IIdea>>(`/ideas/${id}/share`, body ?? {});
+    if (!res.data.success || !res.data.data) {
+      throw new Error(res.data.message || 'Share failed');
+    }
+    return res.data.data;
+  },
 };

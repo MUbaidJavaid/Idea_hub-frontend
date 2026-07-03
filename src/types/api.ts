@@ -175,6 +175,8 @@ export interface IMedia {
   scanStatus: MediaScanStatus;
   scanViolations: string[];
   fileSizeBytes?: number;
+  durationSeconds?: number;
+  uploadedAt?: string;
 }
 
 export type IdeaCategory =
@@ -291,19 +293,22 @@ export interface IIdea {
   }>;
   likeCount: number;
   viewCount: number;
+  shareCount: number;
   commentCount: number;
   trendingScore: number;
   isFeatured: boolean;
+  featuredAt?: string;
+  location?: string;
+  aiSummary?: string;
+  aiSuggestedTags?: string[];
   contentScanScore: number;
   validationScore?: IIdeaValidationScore;
   rejectionReason?: string;
   createdAt: string;
   updatedAt: string;
-  /** Set by client cache / optimistic updates when known */
+  /** Set by API when viewer is authenticated */
   liked?: boolean;
   saved?: boolean;
-  /** UI-only until API exposes shares */
-  shareCount?: number;
   /** Author-only: structured AI coach feedback */
   aiCoachFeedback?: IIdeaAiCoachFeedback;
 }
@@ -427,6 +432,7 @@ export interface UpdateIdeaDto {
   visibility?: IdeaVisibility;
   collaboratorsOpen?: boolean;
   requiredSkills?: string[];
+  location?: string;
 }
 
 export interface CreateIdeaPayload {
@@ -437,6 +443,7 @@ export interface CreateIdeaPayload {
   visibility: IdeaVisibility;
   collaboratorsOpen: boolean;
   requiredSkills: string[];
+  location?: string;
   /** Duet: respond to another user's published idea (must stay public) */
   parentIdeaId?: string;
   isDuetResponse?: boolean;
