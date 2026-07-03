@@ -1,9 +1,10 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 import { cn } from '@/components/ui/cn';
+import { useShareIdea } from '@/hooks/useIdeas';
 import { ICONS } from '@/lib/icons';
 
 import { REACTIONS } from './constants';
@@ -35,6 +36,22 @@ function IdeaPostActionsInner() {
     onLikeButtonClick,
     saveMut,
   } = useIdeaPostCard();
+
+  const shareMut = useShareIdea(idea._id);
+
+  const recordShare = useCallback(
+    (source: string) => {
+      if (!token) {
+        toast.error('Log in to share');
+        return;
+      }
+      void shareMut
+        .mutateAsync(source)
+        .then(() => toast.success('Shared'))
+        .catch(() => toast.error('Share failed'));
+    },
+    [shareMut, token]
+  );
 
   return (
     <>
@@ -134,7 +151,7 @@ function IdeaPostActionsInner() {
                     className="w-full px-3 py-2 text-left text-sm hover:bg-surface2"
                     onClick={() => {
                       setShareOpen(false);
-                      toast.success('Shared to profile (demo)');
+                      recordShare('feed');
                     }}
                   >
                     Share to profile
@@ -147,6 +164,7 @@ function IdeaPostActionsInner() {
                     onClick={() => {
                       setShareOpen(false);
                       void navigator.clipboard.writeText(fullUrl);
+                      if (token) recordShare('feed');
                       toast.success('Link copied');
                     }}
                   >
@@ -159,7 +177,10 @@ function IdeaPostActionsInner() {
                     target="_blank"
                     rel="noreferrer"
                     className="block px-3 py-2 text-sm hover:bg-surface2"
-                    onClick={() => setShareOpen(false)}
+                    onClick={() => {
+                      setShareOpen(false);
+                      if (token) recordShare('feed');
+                    }}
                   >
                     WhatsApp
                   </a>
@@ -170,7 +191,10 @@ function IdeaPostActionsInner() {
                     target="_blank"
                     rel="noreferrer"
                     className="block px-3 py-2 text-sm hover:bg-surface2"
-                    onClick={() => setShareOpen(false)}
+                    onClick={() => {
+                      setShareOpen(false);
+                      if (token) recordShare('feed');
+                    }}
                   >
                     Twitter / X
                   </a>

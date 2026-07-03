@@ -22,6 +22,7 @@ import {
   useAddComment,
   useIdea,
   useIdeaComments,
+  useRecordIdeaView,
   useToggleLike,
   useToggleSave,
 } from '@/hooks/useIdeas';
@@ -151,6 +152,12 @@ export function IdeaDetailSplit({
   useEffect(() => {
     setPollQuestionDraft(idea.poll?.question ?? '');
   }, [idea._id, idea.poll?.question]);
+
+  const viewMut = useRecordIdeaView(idea._id, 'feed');
+  useEffect(() => {
+    void viewMut.mutateAsync().catch(() => undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idea._id]);
 
   const likeMut = useToggleLike(idea._id);
   const saveMut = useToggleSave(idea._id);
@@ -659,6 +666,29 @@ export function IdeaDetailSplit({
                 <p className="whitespace-pre-wrap text-[15px] leading-[1.7] text-[var(--color-text-primary)] sm:text-base">
                   {idea.description}
                 </p>
+                {idea.location?.trim() ? (
+                  <p className="text-sm text-[var(--text-muted)]">
+                    📍 {idea.location}
+                  </p>
+                ) : null}
+                {idea.aiSummary?.trim() ? (
+                  <p className="rounded-xl border border-[var(--border)] bg-surface2/50 p-3 text-sm text-[var(--text-muted)] dark:border-slate-700/50">
+                    <span className="font-semibold text-[var(--text)]">Summary: </span>
+                    {idea.aiSummary}
+                  </p>
+                ) : null}
+                {idea.aiSuggestedTags && idea.aiSuggestedTags.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {idea.aiSuggestedTags.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-md border border-dashed border-brand/40 px-2 py-0.5 text-xs text-brand"
+                      >
+                        +{t}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
                 {idea.tags.length > 0 ? (
                   <div className="flex flex-wrap gap-2 pt-1">
                     {idea.tags.map((t) => (

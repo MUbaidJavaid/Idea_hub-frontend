@@ -207,12 +207,7 @@ export function CreateIdeaModal({
       toast.error('Add a title for your idea');
       return;
     }
-    let body = description.trim();
-    if (locationText.trim()) {
-      body = body
-        ? `${body}\n\n📍 ${locationText.trim()}`
-        : `📍 ${locationText.trim()}`;
-    }
+    const body = description.trim();
 
     const media: CreateIdeaPayload['media'] = [];
 
@@ -261,6 +256,9 @@ export function CreateIdeaModal({
               .filter(Boolean)
           : [],
         media,
+        ...(locationText.trim()
+          ? { location: locationText.trim().slice(0, 200) }
+          : {}),
       };
 
       await createMut.mutateAsync(payload);

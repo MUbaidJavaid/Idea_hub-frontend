@@ -61,6 +61,16 @@ function IdeaPostContentInner() {
       >
         {idea.description}
       </p>
+      {idea.location?.trim() ? (
+        <p className="mt-1 text-xs text-[var(--color-text-muted)]">
+          📍 {idea.location}
+        </p>
+      ) : null}
+      {idea.aiSummary?.trim() ? (
+        <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]">
+          {idea.aiSummary}
+        </p>
+      ) : null}
       {idea.description.length > 180 ? (
         <button
           type="button"

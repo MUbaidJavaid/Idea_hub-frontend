@@ -240,6 +240,57 @@ export function useToggleSave(ideaId: string) {
   });
 }
 
+export function useShareIdea(ideaId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (source: string = 'feed') =>
+      ideasApi.shareIdea(ideaId, {
+        sessionId:
+          typeof window !== 'undefined'
+            ? sessionStorage.getItem('ideahub_behavior_session') ??
+              `share-${Date.now()}`
+            : undefined,
+        source,
+      }),
+    onSuccess: (updated) => {
+      queryClient.setQueryData<IIdea>(['idea', ideaId], updated);
+      updateIdeaInFeedCache(queryClient, ideaId, () => updated);
+    },
+  });
+}
+
+export function useRecordIdeaView(
+  ideaId: string,
+  source: 'feed' | 'search' | 'profile' | 'notification' | 'trending' = 'feed'
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const { behaviorSessionId } = await import('@/lib/api/behavior.api');
+      const sessionId = behaviorSessionId();
+      const viewKey = `ideahub_viewed_${ideaId}`;
+      if (typeof window !== 'undefined' && sessionStorage.getItem(viewKey)) {
+        return null;
+      }
+      const data = await ideasApi.recordView(ideaId, { sessionId, source });
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem(viewKey, '1');
+      }
+      return data;
+    },
+    onSuccess: (data) => {
+      if (!data) return;
+      queryClient.setQueryData<IIdea>(['idea', ideaId], (old) =>
+        old ? { ...old, viewCount: data.viewCount } : old
+      );
+      updateIdeaInFeedCache(queryClient, ideaId, (i) =>
+        i._id !== ideaId ? i : { ...i, viewCount: data.viewCount }
+      );
+    },
+  });
+}
+
 export function useCreateIdea() {
   const queryClient = useQueryClient();
   const user = useAuthStore((s) => s.user);
