@@ -2,94 +2,90 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Lightbulb, Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+
+import { IdeaHubLogo } from '@/components/brand/IdeaHubLogo';
 
 import { LandingThemeToggle } from './LandingThemeToggle';
 
 const nav = [
+  { href: '/#problem', label: 'Product' },
+  { href: '/#workflow', label: 'Workflow' },
   { href: '/#features', label: 'Features' },
-  { href: '/#how-heading', label: 'How it works' },
-  { href: '/#trending-heading', label: 'Trending' },
-  { href: '/#community', label: 'Stories' },
+  { href: '/#pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-  { href: '/privacy', label: 'Privacy' },
-  { href: '/terms', label: 'Terms' },
 ];
-
-function LogoMark() {
-  return (
-    <span
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-400/15 ring-1 ring-amber-400/40 dark:bg-amber-400/10 dark:ring-amber-300/30"
-      aria-hidden
-    >
-      <Lightbulb
-        className="h-[1.15rem] w-[1.15rem] text-amber-600 dark:text-amber-300"
-        strokeWidth={2.25}
-      />
-    </span>
-  );
-}
 
 export function LandingHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
   }, [open]);
 
   return (
-    <header className="landing-scrollbar sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:px-6">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-[background,backdrop-filter,border-color] duration-300 ${
+        scrolled
+          ? 'border-b border-[var(--lh-line)] bg-[var(--lh-bg)]/80 backdrop-blur-xl'
+          : 'border-b border-transparent bg-transparent'
+      }`}
+    >
+      <div className="landing-container flex h-16 items-center justify-between md:h-[4.25rem]">
         <Link
           href="/"
-          className="group flex items-center gap-2.5 text-lg font-bold tracking-tight text-slate-900 transition hover:text-brand-700 dark:text-white dark:hover:text-indigo-300"
+          className="group transition-opacity hover:opacity-70"
+          aria-label="Idea Hub home"
         >
-          <LogoMark />
-          <span>Idea Hub</span>
+          <IdeaHubLogo size={30} />
         </Link>
 
-        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white"
+              className="relative px-3.5 py-2 text-[13px] font-medium text-[var(--lh-muted)] transition-colors hover:text-[var(--lh-ink)] after:absolute after:inset-x-3.5 after:bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-[var(--lh-ink)] after:transition-transform after:duration-300 hover:after:scale-x-100"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:gap-3 lg:flex">
-          <LandingThemeToggle className="h-10 w-10" />
+        <div className="hidden items-center gap-3 lg:flex">
+          <LandingThemeToggle className="h-9 w-9 rounded-full border border-[var(--lh-line)] bg-transparent text-[var(--lh-ink)] hover:bg-[var(--lh-surface)]" />
           <Link
             href="/login"
-            className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/10"
+            className="px-3 py-2 text-[13px] font-medium text-[var(--lh-muted)] transition-colors hover:text-[var(--lh-ink)]"
           >
             Log in
           </Link>
           <Link
             href="/register"
-            className="rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 px-4 py-2 text-sm font-bold text-white transition hover:opacity-90 dark:from-brand-500 dark:to-violet-500"
+            className="inline-flex h-10 items-center rounded-full bg-[var(--lh-ink)] px-5 text-[13px] font-medium text-[var(--lh-bg)] transition-opacity hover:opacity-90"
           >
-            Sign up
+            Get started
           </Link>
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <LandingThemeToggle className="h-9 w-9" />
+          <LandingThemeToggle className="h-9 w-9 rounded-full border border-[var(--lh-line)]" />
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-800 dark:border-white/10 dark:bg-white/5 dark:text-white"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--lh-line)] text-[var(--lh-ink)]"
             onClick={() => setOpen(true)}
             aria-expanded={open}
             aria-controls="mobile-nav"
@@ -104,67 +100,57 @@ export function LandingHeader() {
         {open ? (
           <motion.div
             id="mobile-nav"
-            initial={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-[var(--lh-bg)] lg:hidden"
+            initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-slate-950/60 backdrop-blur-sm xl:hidden"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobile navigation"
-            onClick={() => setOpen(false)}
+            transition={{ duration: 0.25 }}
           >
-            <motion.nav
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 320 }}
-              className="absolute right-0 top-0 flex h-full w-[min(100%,380px)] flex-col border-l border-white/10 bg-white dark:bg-slate-950"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between border-b border-slate-200 p-4 dark:border-white/10">
-                <span className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
-                  <LogoMark />
-                  Menu
-                </span>
-                <button
-                  type="button"
-                  className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
-                  onClick={() => setOpen(false)}
-                  aria-label="Close menu"
+            <div className="landing-container flex h-16 items-center justify-between">
+              <IdeaHubLogo size={30} />
+              <button
+                type="button"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--lh-line)]"
+                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <nav className="landing-container flex flex-col gap-1 pt-8" aria-label="Mobile">
+              {nav.map((item, i) => (
+                <motion.div
+                  key={item.href}
+                  initial={reduce ? false : { opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.04 * i }}
                 >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-              <ul className="flex-1 overflow-y-auto p-4">
-                {nav.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className="block rounded-xl px-4 py-3 text-base font-medium text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-white/5"
-                      onClick={() => setOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="border-t border-slate-200 p-4 dark:border-white/10">
-                <Link
-                  href="/register"
-                  className="flex min-h-[48px] items-center justify-center rounded-xl bg-gradient-to-r from-brand-600 to-violet-600 font-bold text-white ring-1 ring-indigo-600/40"
-                  onClick={() => setOpen(false)}
-                >
-                  Sign up
-                </Link>
+                  <Link
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="landing-display block py-3 text-3xl font-semibold tracking-tight text-[var(--lh-ink)]"
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+              <div className="mt-10 flex flex-col gap-3">
                 <Link
                   href="/login"
-                  className="mt-2 flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 font-semibold text-slate-800 dark:border-white/15 dark:text-white"
                   onClick={() => setOpen(false)}
+                  className="inline-flex h-12 items-center justify-center rounded-full border border-[var(--lh-line)] text-sm font-medium"
                 >
                   Log in
                 </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--lh-ink)] text-sm font-medium text-[var(--lh-bg)]"
+                >
+                  Get started
+                </Link>
               </div>
-            </motion.nav>
+            </nav>
           </motion.div>
         ) : null}
       </AnimatePresence>

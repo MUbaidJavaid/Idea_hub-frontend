@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { LegalDocument } from '@/components/landing/LegalDocument';
-import { LANDING_IMAGES } from '@/data/landing-media';
 
 export const metadata: Metadata = {
   title: 'Contact | Idea Hub',
@@ -42,14 +41,13 @@ export default function ContactPage() {
     <LegalDocument
       title="Contact"
       updated="April 6, 2026"
-      heroImage={LANDING_IMAGES.legalHeroContact}
       currentPage="contact"
-      heroDescription="We read every message. Route your note to the right inbox so you get a precise answer, not a ticket black hole."
+      heroDescription="We read every message. Route your note to the right inbox so you get a precise answer — not a ticket black hole."
     >
       <p>
-        Idea Hub is built for builders who move fast but still expect thoughtful replies. Whether you are
-        reporting a bug, exploring a partnership, or exercising a privacy right, the same principle
-        applies: clear subject lines and concrete details get you to resolution faster.
+        Idea Hub is built for builders who move fast but still expect thoughtful replies. Whether you
+        are reporting a bug, exploring a partnership, or exercising a privacy right: clear subject
+        lines and concrete details get you to resolution faster.
       </p>
 
       <h2>Response times</h2>
@@ -58,34 +56,31 @@ export default function ContactPage() {
           <strong>General &amp; product:</strong> typically within one business day (Pacific time).
         </li>
         <li>
-          <strong>Privacy &amp; legal:</strong> up to three business days for first acknowledgment; complex
-          requests may follow statutory timelines in your region.
+          <strong>Privacy &amp; legal:</strong> up to three business days for first acknowledgment;
+          complex requests may follow statutory timelines in your region.
         </li>
         <li>
           <strong>Security:</strong> critical issues are triaged immediately; we may coordinate
-          coordinated disclosure for fixes.
+          disclosure for fixes.
         </li>
       </ul>
 
       <h2>Channels</h2>
-      <p className="!mb-6">
+      <p className="!mb-8">
         Click any address to open your mail client. For policy context, see our{' '}
         <Link href="/privacy">Privacy Policy</Link> and <Link href="/terms">Terms of Service</Link>.
       </p>
-      <ul className="not-prose space-y-4">
+      <ul className="not-prose divide-y divide-[var(--lh-line)] border-y border-[var(--lh-line)]">
         {channels.map((c) => (
-          <li
-            key={c.email}
-            className="rounded-xl border border-slate-200/80 bg-white/40 p-5 dark:border-white/10 dark:bg-slate-900/20"
-          >
-            <p className="font-semibold text-slate-900 dark:text-white">{c.title}</p>
+          <li key={c.email} className="py-6">
+            <p className="landing-display text-lg font-semibold text-[var(--lh-ink)]">{c.title}</p>
             <a
               href={`mailto:${c.email}`}
-              className="mt-1 inline-block text-sm font-medium text-brand-600 underline-offset-4 hover:underline dark:text-indigo-400"
+              className="mt-1 inline-block text-sm font-medium text-[var(--lh-ink)] underline underline-offset-4 transition-opacity hover:opacity-60"
             >
               {c.email}
             </a>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{c.detail}</p>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--lh-muted)]">{c.detail}</p>
           </li>
         ))}
       </ul>
@@ -93,17 +88,16 @@ export default function ContactPage() {
       <h2>Before you write</h2>
       <ul>
         <li>
-          <strong>Account access:</strong> use in-app recovery first; include the email on the account if
-          you still need human help.
+          <strong>Account access:</strong> use in-app recovery first; include the email on the
+          account if you still need human help.
         </li>
         <li>
-          <strong>Abuse:</strong> use the reporting tools on posts and profiles so moderators have context
-          and message IDs.
+          <strong>Abuse:</strong> use the reporting tools on posts and profiles so moderators have
+          context and message IDs.
         </li>
         <li>
-          <strong>Ideas &amp; IP:</strong> we cannot review unsolicited investment decks or confidential
-          materials sent by email—publish under the visibility you choose on the platform or use a private
-          workspace where available.
+          <strong>Ideas &amp; IP:</strong> we cannot review unsolicited investment decks sent by
+          email — publish under the visibility you choose on the platform.
         </li>
       </ul>
 
@@ -117,17 +111,12 @@ export default function ContactPage() {
         <br />
         United States
       </p>
-      <p className="text-sm text-slate-600 dark:text-slate-400">
-        Registered agent and full corporate details are provided to customers under contract. For vendor
-        onboarding, mention your company domain and expected contract value so we route you to the right
-        desk.
+      <p className="text-sm text-[var(--lh-muted)]">
+        Registered agent and full corporate details are provided to customers under contract. For
+        vendor onboarding, mention your company domain and expected contract value.
       </p>
 
       <h2>Social</h2>
-      <p>
-        Follow for launch updates, community highlights, and policy explainers. We post signal, not engagement
-        bait.
-      </p>
       <ul>
         <li>
           <a href="https://twitter.com/ideahub" target="_blank" rel="noopener noreferrer">
@@ -147,8 +136,8 @@ export default function ContactPage() {
 
       <h2>Company</h2>
       <p>
-        Learn how we think about trust, roadmap, and leadership on the <Link href="/about">About</Link>{' '}
-        page. For how we handle data, read <Link href="/privacy">Privacy</Link>; for rules of use, see{' '}
+        Learn how we think about trust and roadmap on the <Link href="/about">About</Link> page. For
+        data handling, read <Link href="/privacy">Privacy</Link>; for rules of use, see{' '}
         <Link href="/terms">Terms</Link>.
       </p>
     </LegalDocument>
