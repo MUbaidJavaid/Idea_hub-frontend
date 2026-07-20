@@ -4,15 +4,9 @@ import { LandingFooter } from '@/components/landing/LandingFooter';
 import { LandingHeader } from '@/components/landing/LandingHeader';
 
 export const metadata: Metadata = {
-  title: 'Idea Hub | Where serious ideas become products',
+  title: 'Idea Hub | Share ideas that matter',
   description:
-    'The operating system for serious ideation — share, validate, match, and launch with founders, researchers, and operators.',
-  openGraph: {
-    title: 'Idea Hub',
-    description:
-      'Where serious ideas become accountable products. Feedback, validation, matching, and launch narratives in one place.',
-    type: 'website',
-  },
+    'The social platform for ideas: share concepts, collaborate, and grow with a community of builders and innovators.',
 };
 
 export default function LandingLayout({
@@ -21,7 +15,7 @@ export default function LandingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="landing-root landing-scrollbar relative min-h-screen overflow-x-hidden">
+    <div className="landing-scrollbar relative min-h-screen overflow-x-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <LandingHeader />
       <main>{children}</main>
       <LandingFooter />

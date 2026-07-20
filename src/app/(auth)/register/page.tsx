@@ -33,7 +33,7 @@ const registerSchema = z
 type RegisterForm = z.infer<typeof registerSchema>;
 
 const inputClass =
-  'h-12 rounded-full border-[var(--lh-line)] bg-[var(--lh-bg)] px-4 text-[var(--lh-ink)] placeholder:text-[var(--lh-muted)] focus:border-[var(--lh-ink)] focus:ring-[var(--lh-ink)]/15 dark:border-[var(--lh-line)] dark:bg-[var(--lh-surface)]';
+  'rounded-xl border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-900';
 
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
@@ -81,7 +81,7 @@ export default function RegisterPage() {
           Already have an account?{' '}
           <Link
             href="/login"
-            className="font-medium text-[var(--lh-ink)] underline underline-offset-4 transition-opacity hover:opacity-60"
+            className="font-semibold text-brand-700 hover:underline dark:text-indigo-300"
           >
             Sign in
           </Link>
@@ -113,7 +113,10 @@ export default function RegisterPage() {
           />
         </AuthField>
 
-        <AuthField label="Email" error={form.formState.errors.email?.message}>
+        <AuthField
+          label="Email"
+          error={form.formState.errors.email?.message}
+        >
           <Input
             type="email"
             autoComplete="email"
@@ -129,7 +132,7 @@ export default function RegisterPage() {
           action={
             <button
               type="button"
-              className="text-xs font-medium text-[var(--lh-muted)] transition-colors hover:text-[var(--lh-ink)]"
+              className="text-xs font-medium text-brand-700 hover:underline dark:text-indigo-300"
               onClick={() => setShowPw((s) => !s)}
             >
               {showPw ? 'Hide' : 'Show'}
@@ -166,29 +169,23 @@ export default function RegisterPage() {
 
         <button
           type="submit"
-          className="mt-2 inline-flex h-12 w-full items-center justify-center rounded-full bg-[var(--lh-ink)] text-sm font-medium text-[var(--lh-bg)] transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lh-ink)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="landing-btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
           disabled={form.formState.isSubmitting}
         >
           {form.formState.isSubmitting ? (
-            <Spinner size="sm" className="border-[var(--lh-bg)] border-t-transparent" />
+            <Spinner size="sm" className="border-white border-t-transparent" />
           ) : (
             'Create account'
           )}
         </button>
 
-        <p className="pt-1 text-center text-xs leading-relaxed text-[var(--lh-muted)]">
+        <p className="text-center text-xs leading-relaxed text-slate-500 dark:text-slate-400">
           By registering you agree to our{' '}
-          <Link
-            href="/terms"
-            className="text-[var(--lh-ink)] underline underline-offset-2 hover:opacity-60"
-          >
+          <Link href="/terms" className="text-brand-700 hover:underline dark:text-indigo-300">
             Terms
           </Link>{' '}
           and{' '}
-          <Link
-            href="/privacy"
-            className="text-[var(--lh-ink)] underline underline-offset-2 hover:opacity-60"
-          >
+          <Link href="/privacy" className="text-brand-700 hover:underline dark:text-indigo-300">
             Privacy Policy
           </Link>
           .

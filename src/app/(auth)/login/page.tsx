@@ -20,7 +20,7 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 const inputClass =
-  'h-12 rounded-full border-[var(--lh-line)] bg-[var(--lh-bg)] px-4 text-[var(--lh-ink)] placeholder:text-[var(--lh-muted)] focus:border-[var(--lh-ink)] focus:ring-[var(--lh-ink)]/15 dark:border-[var(--lh-line)] dark:bg-[var(--lh-surface)]';
+  'rounded-xl border-slate-300 bg-white dark:border-slate-600 dark:bg-slate-900';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -49,7 +49,7 @@ export default function LoginPage() {
           No account?{' '}
           <Link
             href="/register"
-            className="font-medium text-[var(--lh-ink)] underline underline-offset-4 transition-opacity hover:opacity-60"
+            className="font-semibold text-brand-700 hover:underline dark:text-indigo-300"
           >
             Create one
           </Link>
@@ -57,7 +57,10 @@ export default function LoginPage() {
       }
     >
       <form className="space-y-5" onSubmit={onSubmit} noValidate>
-        <AuthField label="Email" error={form.formState.errors.email?.message}>
+        <AuthField
+          label="Email"
+          error={form.formState.errors.email?.message}
+        >
           <Input
             type="email"
             autoComplete="email"
@@ -73,7 +76,7 @@ export default function LoginPage() {
           action={
             <button
               type="button"
-              className="text-xs font-medium text-[var(--lh-muted)] transition-colors hover:text-[var(--lh-ink)]"
+              className="text-xs font-medium text-brand-700 hover:underline dark:text-indigo-300"
               onClick={() => setShowPw((s) => !s)}
             >
               {showPw ? 'Hide' : 'Show'}
@@ -97,11 +100,11 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[var(--lh-ink)] text-sm font-medium text-[var(--lh-bg)] transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lh-ink)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          className="landing-btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
           disabled={form.formState.isSubmitting}
         >
           {form.formState.isSubmitting ? (
-            <Spinner size="sm" className="border-[var(--lh-bg)] border-t-transparent" />
+            <Spinner size="sm" className="border-white border-t-transparent" />
           ) : (
             'Sign in'
           )}

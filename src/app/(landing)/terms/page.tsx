@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { LegalDocument } from '@/components/landing/LegalDocument';
+import { LANDING_IMAGES } from '@/data/landing-media';
 
 export const metadata: Metadata = {
   title: 'Terms of Service | Idea Hub',
@@ -13,6 +14,7 @@ export default function TermsPage() {
     <LegalDocument
       title="Terms of Service"
       updated="April 6, 2026"
+      heroImage={LANDING_IMAGES.legalHeroTerms}
       currentPage="terms"
       heroDescription="The rules that keep Idea Hub safe for builders: what you can expect from us, and what we expect from you."
     >
