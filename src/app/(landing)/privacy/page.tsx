@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { LegalDocument } from '@/components/landing/LegalDocument';
-import { LANDING_IMAGES } from '@/data/landing-media';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Idea Hub',
@@ -14,9 +13,8 @@ export default function PrivacyPage() {
     <LegalDocument
       title="Privacy Policy"
       updated="April 6, 2026"
-      heroImage={LANDING_IMAGES.legalHeroPrivacy}
       currentPage="privacy"
-      heroDescription="How we collect, use, and protect information when you use Idea Hub, written to be readable, not buried in legalese."
+      heroDescription="How we collect, use, and protect information when you use Idea Hub — written to be readable, not buried in legalese."
     >
       <p>
         This Privacy Policy describes how Idea Hub (“we,” “us,” or “our”) collects, uses, stores, and
@@ -30,11 +28,14 @@ export default function PrivacyPage() {
         stays operational (security, billing, support).
       </p>
 
-      <div className="not-prose rounded-xl border border-slate-200/80 bg-slate-50/60 p-5 text-sm leading-relaxed text-slate-700 dark:border-white/10 dark:bg-slate-900/30 dark:text-slate-300">
-        <p className="font-semibold text-slate-900 dark:text-white">Privacy inquiries</p>
+      <div className="not-prose my-8 border-y border-[var(--lh-line)] py-6 text-sm leading-relaxed text-[var(--lh-muted)]">
+        <p className="font-semibold text-[var(--lh-ink)]">Privacy inquiries</p>
         <p className="mt-1">
           For privacy-specific questions, data requests, or regulatory correspondence:{' '}
-          <a href="mailto:privacy@ideahub.com" className="font-medium text-brand-600 dark:text-indigo-400">
+          <a
+            href="mailto:privacy@ideahub.com"
+            className="font-medium text-[var(--lh-ink)] underline underline-offset-4"
+          >
             privacy@ideahub.com
           </a>
         </p>

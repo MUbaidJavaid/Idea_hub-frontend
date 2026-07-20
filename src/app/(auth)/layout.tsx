@@ -7,7 +7,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="landing-scrollbar relative min-h-screen overflow-x-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="landing-root landing-scrollbar relative min-h-screen overflow-x-hidden">
       <LandingHeader />
       <main>{children}</main>
       <LandingFooter />

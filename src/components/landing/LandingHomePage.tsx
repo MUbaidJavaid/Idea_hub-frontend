@@ -5,14 +5,19 @@ import { useEffect } from 'react';
 
 import { useAuthStore } from '@/store/authStore';
 
-import { LandingFeaturesPro } from './LandingFeaturesPro';
-import { LandingGallery } from './LandingGallery';
-import { LandingHeroPro } from './LandingHeroPro';
-import { LandingHowItWorks } from './LandingHowItWorks';
-import { LandingStatsBar } from './LandingStatsBar';
-import { LandingTrendingIdeas } from './LandingTrendingIdeas';
-import { LandingWaitlistCta } from './LandingWaitlistCta';
-import { TestimonialsPro } from './TestimonialsPro';
+import { LandingAiCapabilities } from './sections/LandingAiCapabilities';
+import { LandingFaq } from './sections/LandingFaq';
+import { LandingFeatures } from './sections/LandingFeatures';
+import { LandingFinalCta } from './sections/LandingFinalCta';
+import { LandingHero } from './sections/LandingHero';
+import { LandingPricing } from './sections/LandingPricing';
+import { LandingProblem } from './sections/LandingProblem';
+import { LandingProductPreview } from './sections/LandingProductPreview';
+import { LandingSolution } from './sections/LandingSolution';
+import { LandingStats } from './sections/LandingStats';
+import { LandingTestimonials } from './sections/LandingTestimonials';
+import { LandingTrustedBy } from './sections/LandingTrustedBy';
+import { LandingWorkflow } from './sections/LandingWorkflow';
 
 export function LandingHomePage() {
   const router = useRouter();
@@ -26,7 +31,7 @@ export function LandingHomePage() {
 
   if (isAuthenticated) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center px-4 text-sm text-slate-500 dark:text-slate-400">
+      <div className="flex min-h-[40vh] items-center justify-center px-4 text-sm text-[var(--lh-muted)]">
         Redirecting to your feed…
       </div>
     );
@@ -34,14 +39,19 @@ export function LandingHomePage() {
 
   return (
     <>
-      <LandingHeroPro />
-      <LandingStatsBar />
-      <LandingFeaturesPro />
-      <LandingHowItWorks />
-      <LandingTrendingIdeas />
-      <TestimonialsPro />
-      <LandingGallery />
-      <LandingWaitlistCta />
+      <LandingHero />
+      <LandingTrustedBy />
+      <LandingProblem />
+      <LandingSolution />
+      <LandingWorkflow />
+      <LandingFeatures />
+      <LandingAiCapabilities />
+      <LandingProductPreview />
+      <LandingStats />
+      <LandingTestimonials />
+      <LandingPricing />
+      <LandingFaq />
+      <LandingFinalCta />
     </>
   );
 }
