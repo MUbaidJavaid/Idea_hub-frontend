@@ -31,24 +31,23 @@ import {
 } from 'recharts';
 
 import { StatCard } from '@/components/dashboard/StatCard';
-import { useAdminTheme } from '@/components/admin/AdminThemeContext';
 import { cn } from '@/components/ui/cn';
 import type { AdminDashboardStats, IIdea, IUser } from '@/types/api';
 
-/** Neon palette — dark dashboard (reference: cyan + violet accents) */
+/** Landing-aligned category palette (teal / ink family) */
 const CATEGORY_COLORS: Record<string, string> = {
-  tech: '#38bdf8',
-  health: '#34d399',
-  education: '#fbbf24',
-  environment: '#4ade80',
-  finance: '#60a5fa',
-  social: '#f472b6',
-  art: '#a78bfa',
-  other: '#94a3b8',
+  tech: '#0F766E',
+  health: '#0D9488',
+  education: '#115E59',
+  environment: '#14B8A6',
+  finance: '#134E4A',
+  social: '#5EEAD4',
+  art: '#2DD4BF',
+  other: '#737373',
 };
 
-const CYAN = '#22d3ee';
-const VIOLET = '#a78bfa';
+const TEAL = '#0F766E';
+const INK = '#262626';
 
 function safeDayLabel(dateStr: string): string {
   try {
@@ -246,7 +245,6 @@ export function AdminDashboardCharts({
 }: {
   stats: AdminDashboardStats | Partial<AdminDashboardStats> | null | undefined;
 }) {
-  const { isLight } = useAdminTheme();
   const {
     overview,
     trends,
@@ -305,46 +303,38 @@ export function AdminDashboardCharts({
     .filter((d) => d.value > 0)
     .sort((a, b) => b.value - a.value);
 
-  const gridStroke = isLight ? 'rgba(15,23,42,0.1)' : 'rgba(0,242,255,0.08)';
-  const axisMuted = isLight ? '#64748b' : '#7dd3fc';
+  const gridStroke = 'var(--lh-line)';
+  const axisMuted = 'var(--lh-muted)';
 
   return (
     <div className="w-full min-w-0 space-y-5">
       <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          isLight={isLight}
           label="Total ideas"
           value={kpis.totalIdeas}
           subLabel={`MoM ideas ${monthlyGrowth.ideasPct >= 0 ? '+' : ''}${monthlyGrowth.ideasPct}% · +${today.newIdeas} today`}
           icon={Lightbulb}
-          accent="blue"
           trendPct={monthlyGrowth.ideasPct}
         />
         <StatCard
-          isLight={isLight}
           label="Active collaborations"
           value={kpis.activeProjects}
           subLabel="Accepted collab requests"
           icon={FolderKanban}
-          accent="purple"
           trendPct={trends.ideasPct}
         />
         <StatCard
-          isLight={isLight}
           label="Total users"
           value={kpis.totalUsers}
           subLabel={`MoM signups ${monthlyGrowth.usersPct >= 0 ? '+' : ''}${monthlyGrowth.usersPct}% · +${today.newUsers} today`}
           icon={Users}
-          accent="green"
           trendPct={monthlyGrowth.usersPct}
         />
         <StatCard
-          isLight={isLight}
           label="Published ideas"
           value={kpis.publishedIdeas}
           subLabel={`Review queue ${scanQueue.pending} · avg score ${scanQueue.avgScore}`}
           icon={Sparkles}
-          accent="amber"
           trendPct={trends.queuePct}
         />
       </div>
@@ -352,16 +342,14 @@ export function AdminDashboardCharts({
       <div className="grid min-w-0 grid-cols-1 gap-5 xl:grid-cols-12">
         <div
           className={cn(
-            'min-h-[300px] rounded-xl border p-5 xl:col-span-5',
-            isLight
-              ? 'border-slate-200 bg-white shadow-sm'
-              : 'border-cyan-500/25 bg-[#0d1520] shadow-[0_0_32px_rgba(0,242,255,0.06)]'
+            'min-h-[300px] border p-5 xl:col-span-5',
+            'border-[var(--lh-line)] bg-[var(--lh-bg)]'
           )}
         >
           <h3
             className={cn(
               'text-sm font-semibold',
-              isLight ? 'text-slate-900' : 'text-white'
+              'text-[var(--lh-ink)]'
             )}
           >
             Ideas trend
@@ -369,16 +357,13 @@ export function AdminDashboardCharts({
           <p
             className={cn(
               'mb-2 text-[11px]',
-              isLight ? 'text-slate-500' : 'text-slate-500'
+              'text-[var(--lh-muted)]'
             )}
           >
             New ideas per month (last 6 months, UTC)
           </p>
           <div
-            className={cn(
-              'h-[240px] w-full min-w-0',
-              !isLight && '[filter:drop-shadow(0_0_14px_rgba(34,211,238,0.15))]'
-            )}
+            className="h-[240px] w-full min-w-0"
           >
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
@@ -387,8 +372,8 @@ export function AdminDashboardCharts({
               >
                 <defs>
                   <linearGradient id="trend6Glow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={CYAN} stopOpacity={0.35} />
-                    <stop offset="100%" stopColor={CYAN} stopOpacity={0} />
+                    <stop offset="0%" stopColor={TEAL} stopOpacity={0.35} />
+                    <stop offset="100%" stopColor={TEAL} stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
@@ -399,7 +384,7 @@ export function AdminDashboardCharts({
                 <XAxis
                   dataKey="label"
                   tick={{ fill: axisMuted, fontSize: 11 }}
-                  axisLine={{ stroke: isLight ? '#e2e8f0' : 'rgba(34,211,238,0.15)' }}
+                  axisLine={{ stroke: 'var(--lh-line)' }}
                   tickLine={false}
                 />
                 <YAxis
@@ -411,10 +396,8 @@ export function AdminDashboardCharts({
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: isLight ? '#ffffff' : '#0a121c',
-                    border: isLight
-                      ? '1px solid #e2e8f0'
-                      : '1px solid rgba(34,211,238,0.35)',
+                    backgroundColor: 'var(--lh-bg)',
+                    border: '1px solid var(--lh-line)',
                     borderRadius: 10,
                     fontSize: 12,
                   }}
@@ -423,15 +406,15 @@ export function AdminDashboardCharts({
                   type="monotone"
                   dataKey="ideas"
                   name="New ideas"
-                  stroke={CYAN}
+                  stroke={TEAL}
                   strokeWidth={3}
                   dot={{
                     r: 4,
-                    fill: isLight ? '#fff' : '#0a1628',
-                    stroke: CYAN,
+                    fill: 'var(--lh-bg)',
+                    stroke: TEAL,
                     strokeWidth: 2,
                   }}
-                  activeDot={{ r: 6, fill: CYAN }}
+                  activeDot={{ r: 6, fill: TEAL }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -441,16 +424,14 @@ export function AdminDashboardCharts({
       <div className="grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-5 xl:col-span-7">
         <div
           className={cn(
-            'min-h-[320px] rounded-xl border p-5 lg:col-span-3',
-            isLight
-              ? 'border-slate-200 bg-white shadow-sm'
-              : 'border-cyan-500/25 bg-[#0d1520] shadow-[0_0_32px_rgba(0,242,255,0.06)]'
+            'min-h-[320px] border p-5 lg:col-span-3',
+            'border-[var(--lh-line)] bg-[var(--lh-bg)]'
           )}
         >
           <h3
             className={cn(
               'mb-2 text-sm font-semibold',
-              isLight ? 'text-slate-900' : 'text-white'
+              'text-[var(--lh-ink)]'
             )}
           >
             Weekly activity
@@ -458,17 +439,12 @@ export function AdminDashboardCharts({
           <p
             className={cn(
               'mb-2 text-[11px]',
-              isLight ? 'text-slate-500' : 'text-slate-500'
+              'text-[var(--lh-muted)]'
             )}
           >
             New users vs new ideas (last 7 days)
           </p>
-          <div
-            className={cn(
-              'h-[280px] w-full min-w-0 sm:h-[300px]',
-              !isLight && '[filter:drop-shadow(0_0_12px_rgba(34,211,238,0.12))]'
-            )}
-          >
+          <div className="h-[280px] w-full min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart
                 data={lineData}
@@ -476,12 +452,12 @@ export function AdminDashboardCharts({
               >
                 <defs>
                   <linearGradient id="adminAreaUsers" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={CYAN} stopOpacity={0.35} />
-                    <stop offset="100%" stopColor={CYAN} stopOpacity={0} />
+                    <stop offset="0%" stopColor={TEAL} stopOpacity={0.35} />
+                    <stop offset="100%" stopColor={TEAL} stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="adminAreaIdeas" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={VIOLET} stopOpacity={0.28} />
-                    <stop offset="100%" stopColor={VIOLET} stopOpacity={0} />
+                    <stop offset="0%" stopColor={INK} stopOpacity={0.28} />
+                    <stop offset="100%" stopColor={INK} stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
@@ -492,7 +468,7 @@ export function AdminDashboardCharts({
                 <XAxis
                   dataKey="label"
                   tick={{ fill: axisMuted, fontSize: 11 }}
-                  axisLine={{ stroke: isLight ? '#e2e8f0' : 'rgba(34,211,238,0.15)' }}
+                  axisLine={{ stroke: 'var(--lh-line)' }}
                   tickLine={false}
                 />
                 <YAxis
@@ -504,18 +480,14 @@ export function AdminDashboardCharts({
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: isLight ? '#ffffff' : '#0a121c',
-                    border: isLight
-                      ? '1px solid #e2e8f0'
-                      : '1px solid rgba(34,211,238,0.35)',
+                    backgroundColor: 'var(--lh-bg)',
+                    border: '1px solid var(--lh-line)',
                     borderRadius: 10,
                     fontSize: 12,
-                    boxShadow: isLight
-                      ? undefined
-                      : '0 0 20px rgba(0,242,255,0.15)',
+                    boxShadow: 'none',
                   }}
                   labelStyle={{
-                    color: isLight ? '#334155' : '#e2e8f0',
+                    color: 'var(--lh-ink)',
                     fontWeight: 600,
                   }}
                 />
@@ -540,17 +512,17 @@ export function AdminDashboardCharts({
                   type="monotone"
                   dataKey="users"
                   name="Users"
-                  stroke={CYAN}
+                  stroke={TEAL}
                   strokeWidth={2.5}
                   dot={{
                     r: 4,
-                    fill: isLight ? '#fff' : '#0a1628',
-                    stroke: CYAN,
+                    fill: 'var(--lh-bg)',
+                    stroke: TEAL,
                     strokeWidth: 2,
                   }}
                   activeDot={{
                     r: 6,
-                    fill: CYAN,
+                    fill: TEAL,
                     stroke: '#fff',
                     strokeWidth: 2,
                   }}
@@ -559,17 +531,17 @@ export function AdminDashboardCharts({
                   type="monotone"
                   dataKey="ideas"
                   name="Ideas"
-                  stroke={VIOLET}
+                  stroke={INK}
                   strokeWidth={2.5}
                   dot={{
                     r: 4,
-                    fill: isLight ? '#fff' : '#0a1628',
-                    stroke: VIOLET,
+                    fill: 'var(--lh-bg)',
+                    stroke: INK,
                     strokeWidth: 2,
                   }}
                   activeDot={{
                     r: 6,
-                    fill: VIOLET,
+                    fill: INK,
                     stroke: '#fff',
                     strokeWidth: 2,
                   }}
@@ -581,23 +553,21 @@ export function AdminDashboardCharts({
 
         <div
           className={cn(
-            'min-h-[320px] rounded-xl border p-5 lg:col-span-2',
-            isLight
-              ? 'border-slate-200 bg-white shadow-sm'
-              : 'border-cyan-500/25 bg-[#0d1520] shadow-[0_0_32px_rgba(0,242,255,0.06)]'
+            'min-h-[320px] border p-5 lg:col-span-2',
+            'border-[var(--lh-line)] bg-[var(--lh-bg)]'
           )}
         >
           <h3
             className={cn(
               'mb-1 text-sm font-semibold',
-              isLight ? 'text-slate-900' : 'text-white'
+              'text-[var(--lh-ink)]'
             )}
           >
             Ideas by category
           </h3>
           <div className="relative h-[200px] w-full">
             {donutData.length === 0 ? (
-              <p className="flex h-full items-center justify-center text-xs text-slate-500">
+              <p className="flex h-full items-center justify-center text-xs text-[var(--lh-muted)]">
                 No published ideas yet
               </p>
             ) : (
@@ -623,9 +593,7 @@ export function AdminDashboardCharts({
                         <div
                           className={cn(
                             'rounded border px-2 py-1 text-[10px]',
-                            isLight
-                              ? 'border-slate-200 bg-white'
-                              : 'border-cyan-500/30 bg-[#070d16]'
+                            'border-[var(--lh-line)] bg-[var(--lh-surface)]'
                           )}
                         >
                           {String(payload[0].name)}: {payload[0].value}
@@ -641,12 +609,12 @@ export function AdminDashboardCharts({
                 <p
                   className={cn(
                     'text-xl font-bold tabular-nums',
-                    isLight ? 'text-slate-900' : 'text-white'
+                    'text-[var(--lh-ink)]'
                   )}
                 >
                   {donutTotal.toLocaleString()}
                 </p>
-                <p className="text-[10px] text-slate-500">total</p>
+                <p className="text-[10px] text-[var(--lh-muted)]">total</p>
               </div>
             ) : null}
           </div>
@@ -657,7 +625,7 @@ export function AdminDashboardCharts({
                   className="h-2 w-2 rounded-full"
                   style={{ backgroundColor: d.fill }}
                 />
-                <span className={isLight ? 'text-slate-600' : 'text-slate-400'}>
+                <span className={'text-[var(--lh-muted)]'}>
                   {d.name} · {d.value}
                 </span>
               </li>
@@ -669,25 +637,23 @@ export function AdminDashboardCharts({
 
       <div
         className={cn(
-          'rounded-xl border p-5',
-          isLight
-            ? 'border-slate-200 bg-white shadow-sm'
-            : 'border-cyan-500/25 bg-[#0d1520] shadow-[0_0_32px_rgba(0,242,255,0.06)]'
+          'border p-5',
+          'border-[var(--lh-line)] bg-[var(--lh-bg)]'
         )}
       >
         <h3
           className={cn(
             'mb-1 text-sm font-semibold',
-            isLight ? 'text-slate-900' : 'text-white'
+            'text-[var(--lh-ink)]'
           )}
         >
           Ideas by status
         </h3>
-        <p className="mb-2 text-[11px] text-slate-500">
+        <p className="mb-2 text-[11px] text-[var(--lh-muted)]">
           Counts across all workflow states
         </p>
         {statusBarData.length === 0 ? (
-          <p className="py-8 text-center text-xs text-slate-500">No ideas yet</p>
+          <p className="py-8 text-center text-xs text-[var(--lh-muted)]">No ideas yet</p>
         ) : (
           <div className="h-[min(280px,42vh)] w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
@@ -704,7 +670,7 @@ export function AdminDashboardCharts({
                 <XAxis
                   type="number"
                   tick={{ fill: axisMuted, fontSize: 10 }}
-                  axisLine={{ stroke: isLight ? '#e2e8f0' : 'rgba(34,211,238,0.15)' }}
+                  axisLine={{ stroke: 'var(--lh-line)' }}
                 />
                 <YAxis
                   type="category"
@@ -716,10 +682,8 @@ export function AdminDashboardCharts({
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: isLight ? '#ffffff' : '#0a121c',
-                    border: isLight
-                      ? '1px solid #e2e8f0'
-                      : '1px solid rgba(34,211,238,0.35)',
+                    backgroundColor: 'var(--lh-bg)',
+                    border: '1px solid var(--lh-line)',
                     borderRadius: 8,
                     fontSize: 12,
                   }}
@@ -727,7 +691,7 @@ export function AdminDashboardCharts({
                 <Bar
                   dataKey="value"
                   radius={[0, 6, 6, 0]}
-                  fill={CYAN}
+                  fill={TEAL}
                   maxBarSize={28}
                 />
               </BarChart>
@@ -739,17 +703,15 @@ export function AdminDashboardCharts({
       <div className="grid min-w-0 grid-cols-1 gap-4 lg:grid-cols-3">
         <div
           className={cn(
-            'rounded-xl border p-4',
-            isLight
-              ? 'border-slate-200 bg-white shadow-sm'
-              : 'border-cyan-500/15 bg-[#0d1520]'
+            'border p-4',
+            'border-[var(--lh-line)] bg-[var(--lh-bg)]'
           )}
         >
           <div className="mb-3 flex items-center justify-between">
             <h3
               className={cn(
                 'text-sm font-semibold',
-                isLight ? 'text-slate-900' : 'text-white'
+                'text-[var(--lh-ink)]'
               )}
             >
               Recent ideas
@@ -758,7 +720,7 @@ export function AdminDashboardCharts({
               href="/admin/ideas"
               className={cn(
                 'text-[11px] font-medium',
-                isLight ? 'text-cyan-700 hover:underline' : 'text-cyan-300 hover:underline'
+                'text-[var(--lh-accent)] hover:underline'
               )}
             >
               All ideas →
@@ -767,7 +729,7 @@ export function AdminDashboardCharts({
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[11px]">
               <thead>
-                <tr className={cn(isLight ? 'text-slate-500' : 'text-slate-400')}>
+                <tr className={cn('text-[var(--lh-muted)]')}>
                   <th className="pb-2 pr-2 font-medium">Title</th>
                   <th className="pb-2 pr-2 font-medium">Author</th>
                   <th className="pb-2 pr-2 font-medium">Cat</th>
@@ -778,7 +740,7 @@ export function AdminDashboardCharts({
               <tbody>
                 {recentIdeasFeed.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-4 text-slate-500">
+                    <td colSpan={5} className="py-4 text-[var(--lh-muted)]">
                       No ideas yet
                     </td>
                   </tr>
@@ -788,7 +750,7 @@ export function AdminDashboardCharts({
                       key={idea._id}
                       className={cn(
                         'border-t',
-                        isLight ? 'border-slate-100' : 'border-white/5'
+                        'border-[var(--lh-line)]'
                       )}
                     >
                       <td className="max-w-[140px] truncate py-1.5 pr-2 font-medium">
@@ -796,22 +758,22 @@ export function AdminDashboardCharts({
                           href={`/ideas/${idea._id}`}
                           className={cn(
                             'hover:underline',
-                            isLight ? 'text-slate-900' : 'text-slate-100'
+                            'text-[var(--lh-ink)]'
                           )}
                         >
                           {idea.title}
                         </Link>
                       </td>
-                      <td className="truncate py-1.5 pr-2 text-slate-500">
+                      <td className="truncate py-1.5 pr-2 text-[var(--lh-muted)]">
                         {authorLabel(idea)}
                       </td>
-                      <td className="py-1.5 pr-2 text-slate-500">{idea.category}</td>
+                      <td className="py-1.5 pr-2 text-[var(--lh-muted)]">{idea.category}</td>
                       <td className="py-1.5 pr-2">
-                        <span className="rounded bg-slate-500/15 px-1.5 py-0.5 text-[10px] text-slate-300">
+                        <span className="border border-[var(--lh-line)] px-1.5 py-0.5 text-[10px] text-[var(--lh-muted)]">
                           {idea.status}
                         </span>
                       </td>
-                      <td className="py-1.5 tabular-nums text-slate-400">
+                      <td className="py-1.5 tabular-nums text-[var(--lh-muted)]">
                         {idea.likeCount}
                       </td>
                     </tr>
@@ -824,51 +786,47 @@ export function AdminDashboardCharts({
 
         <div
           className={cn(
-            'rounded-xl border p-4',
-            isLight
-              ? 'border-slate-200 bg-white shadow-sm'
-              : 'border-cyan-500/15 bg-[#0d1520]'
+            'border p-4',
+            'border-[var(--lh-line)] bg-[var(--lh-bg)]'
           )}
         >
           <h3
             className={cn(
               'mb-3 text-sm font-semibold',
-              isLight ? 'text-slate-900' : 'text-white'
+              'text-[var(--lh-ink)]'
             )}
           >
             Top contributors
           </h3>
           <ul className="space-y-2">
             {topContributors.length === 0 ? (
-              <li className="text-xs text-slate-500">No published ideas yet.</li>
+              <li className="text-xs text-[var(--lh-muted)]">No published ideas yet.</li>
             ) : (
               topContributors.map((row, i) => (
                 <li
                   key={row.userId}
                   className={cn(
                     'flex items-center gap-2 rounded-lg border px-2 py-2',
-                    isLight
-                      ? 'border-slate-100 bg-slate-50'
-                      : 'border-cyan-500/10 bg-[#070d16]/50'
+                    'border-[var(--lh-line)] bg-[var(--lh-surface)]'
                   )}
                 >
-                  <span className="w-5 text-center text-xs font-bold text-slate-500">
+                  <span className="w-5 text-center text-xs font-bold text-[var(--lh-muted)]">
                     {i + 1}
                   </span>
                   <div className="min-w-0 flex-1">
                     <p
                       className={cn(
                         'truncate text-xs font-medium',
-                        isLight ? 'text-slate-900' : 'text-slate-100'
+                        'text-[var(--lh-ink)]'
                       )}
                     >
                       {row.fullName}
                     </p>
-                    <p className="truncate text-[10px] text-slate-500">
+                    <p className="truncate text-[10px] text-[var(--lh-muted)]">
                       @{row.username} · {row.ideasCount} ideas
                     </p>
                   </div>
-                  <span className="shrink-0 text-[10px] tabular-nums text-cyan-300/90">
+                  <span className="shrink-0 text-[10px] tabular-nums text-[var(--lh-accent)]">
                     {row.votesReceived} ♥
                   </span>
                 </li>
@@ -879,17 +837,15 @@ export function AdminDashboardCharts({
 
         <div
           className={cn(
-            'rounded-xl border p-4',
-            isLight
-              ? 'border-slate-200 bg-white shadow-sm'
-              : 'border-cyan-500/15 bg-[#0d1520]'
+            'border p-4',
+            'border-[var(--lh-line)] bg-[var(--lh-bg)]'
           )}
         >
           <div className="mb-3 flex items-center justify-between">
             <h3
               className={cn(
                 'text-sm font-semibold',
-                isLight ? 'text-slate-900' : 'text-white'
+                'text-[var(--lh-ink)]'
               )}
             >
               Pending approvals
@@ -898,7 +854,7 @@ export function AdminDashboardCharts({
               href="/admin/scan-queue"
               className={cn(
                 'text-[11px] font-medium',
-                isLight ? 'text-cyan-700 hover:underline' : 'text-cyan-300 hover:underline'
+                'text-[var(--lh-accent)] hover:underline'
               )}
             >
               Queue →
@@ -906,7 +862,7 @@ export function AdminDashboardCharts({
           </div>
           <ul className="space-y-2">
             {pendingApprovals.length === 0 ? (
-              <li className="text-xs text-slate-500">Queue is clear.</li>
+              <li className="text-xs text-[var(--lh-muted)]">Queue is clear.</li>
             ) : (
               pendingApprovals.map((idea) => (
                 <li key={idea._id}>
@@ -914,20 +870,18 @@ export function AdminDashboardCharts({
                     href={`/ideas/${idea._id}`}
                     className={cn(
                       'flex flex-col gap-0.5 rounded-lg border px-2 py-2 transition',
-                      isLight
-                        ? 'border-amber-100 bg-amber-50/50 hover:bg-amber-50'
-                        : 'border-amber-500/20 bg-amber-500/5 hover:border-amber-500/35'
+                      'border-[var(--lh-line)] bg-[var(--lh-surface)] hover:border-[var(--lh-accent)]'
                     )}
                   >
                     <span
                       className={cn(
                         'truncate text-xs font-medium',
-                        isLight ? 'text-slate-900' : 'text-slate-100'
+                        'text-[var(--lh-ink)]'
                       )}
                     >
                       {idea.title}
                     </span>
-                    <span className="truncate text-[10px] text-slate-500">
+                    <span className="truncate text-[10px] text-[var(--lh-muted)]">
                       {authorLabel(idea)} · {idea.status}
                     </span>
                   </Link>
@@ -941,17 +895,14 @@ export function AdminDashboardCharts({
       <div className="grid min-w-0 grid-cols-1 gap-4 lg:grid-cols-2">
         <div
           className={cn(
-            'rounded-xl border p-4',
-            isLight
-              ? 'border-slate-200 bg-white shadow-sm'
-              : 'border-cyan-500/15 bg-[#242526]'
+            'border border-[var(--lh-line)] bg-[var(--lh-bg)] p-4'
           )}
         >
           <div className="mb-3 flex items-center justify-between">
             <h3
               className={cn(
                 'text-sm font-semibold',
-                isLight ? 'text-slate-900' : 'text-white'
+                'text-[var(--lh-ink)]'
               )}
             >
               Top ideas
@@ -960,7 +911,7 @@ export function AdminDashboardCharts({
               href="/admin/ideas"
               className={cn(
                 'text-[11px] font-medium',
-                isLight ? 'text-cyan-700 hover:underline' : 'text-cyan-300 hover:underline'
+                'text-[var(--lh-accent)] hover:underline'
               )}
             >
               View all ideas →
@@ -968,36 +919,33 @@ export function AdminDashboardCharts({
           </div>
           <ul className="space-y-2">
             {topIdeas.length === 0 ? (
-              <li className="text-xs text-slate-500">No published ideas.</li>
+              <li className="text-xs text-[var(--lh-muted)]">No published ideas.</li>
             ) : (
               topIdeas.map((idea, rank) => (
                 <li key={idea._id}>
                   <Link
                     href={`/ideas/${idea._id}`}
                     className={cn(
-                      'flex items-center gap-2 rounded-lg border px-2 py-2 transition',
-                      isLight
-                        ? 'border-slate-100 bg-slate-50 hover:bg-slate-100'
-                        : 'border-cyan-500/10 bg-[#070d16]/50 hover:border-cyan-500/25'
+                      'flex items-center gap-2 border border-[var(--lh-line)] bg-[var(--lh-surface)] px-2 py-2 transition hover:border-[var(--lh-accent)]'
                     )}
                   >
-                    <span className="w-6 text-center text-xs font-bold text-slate-500">
+                    <span className="w-6 text-center text-xs font-bold text-[var(--lh-muted)]">
                       {rank + 1}
                     </span>
                     <div className="min-w-0 flex-1">
                       <p
                         className={cn(
                           'truncate text-xs font-medium',
-                          isLight ? 'text-slate-900' : 'text-slate-100'
+                          'text-[var(--lh-ink)]'
                         )}
                       >
                         {idea.title}
                       </p>
-                      <p className="truncate text-[10px] text-slate-500">
+                      <p className="truncate text-[10px] text-[var(--lh-muted)]">
                         {authorLabel(idea)} · {idea.category}
                       </p>
                     </div>
-                    <span className="shrink-0 text-[10px] tabular-nums text-slate-600">
+                    <span className="shrink-0 text-[10px] tabular-nums text-[var(--lh-muted)]">
                       {idea.likeCount} likes
                     </span>
                   </Link>
@@ -1009,17 +957,14 @@ export function AdminDashboardCharts({
 
         <div
           className={cn(
-            'rounded-xl border p-4',
-            isLight
-              ? 'border-slate-200 bg-white shadow-sm'
-              : 'border-cyan-500/15 bg-[#242526]'
+            'border border-[var(--lh-line)] bg-[var(--lh-bg)] p-4'
           )}
         >
           <div className="mb-3 flex items-center justify-between">
             <h3
               className={cn(
                 'text-sm font-semibold',
-                isLight ? 'text-slate-900' : 'text-white'
+                'text-[var(--lh-ink)]'
               )}
             >
               Recent users
@@ -1028,7 +973,7 @@ export function AdminDashboardCharts({
               href="/admin/users"
               className={cn(
                 'text-[11px] font-medium',
-                isLight ? 'text-cyan-700 hover:underline' : 'text-cyan-300 hover:underline'
+                'text-[var(--lh-accent)] hover:underline'
               )}
             >
               View all users →
@@ -1036,16 +981,14 @@ export function AdminDashboardCharts({
           </div>
           <ul className="space-y-2">
             {recentUsers.length === 0 ? (
-              <li className="text-xs text-slate-500">No users.</li>
+              <li className="text-xs text-[var(--lh-muted)]">No users.</li>
             ) : (
               recentUsers.map((u) => (
                 <li
                   key={u._id}
                   className={cn(
                     'flex items-center gap-2 rounded-lg border px-2 py-2',
-                    isLight
-                      ? 'border-slate-100 bg-slate-50'
-                      : 'border-cyan-500/10 bg-[#070d16]/50'
+                    'border-[var(--lh-line)] bg-[var(--lh-surface)]'
                   )}
                 >
                   <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-slate-700">
@@ -1062,12 +1005,12 @@ export function AdminDashboardCharts({
                     <p
                       className={cn(
                         'truncate text-xs font-medium',
-                        isLight ? 'text-slate-900' : 'text-slate-100'
+                        'text-[var(--lh-ink)]'
                       )}
                     >
                       {u.fullName}
                     </p>
-                    <p className="truncate text-[10px] text-slate-500">@{u.username}</p>
+                    <p className="truncate text-[10px] text-[var(--lh-muted)]">@{u.username}</p>
                   </div>
                   <span
                     className={cn(
@@ -1091,21 +1034,21 @@ export function AdminDashboardCharts({
       <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div
           className={cn(
-            'flex items-center gap-3 rounded-xl border p-4',
-            isLight ? 'border-slate-200 bg-slate-50/90' : 'border-cyan-500/20 bg-[#0d1520]'
+            'flex items-center gap-3 border p-4',
+            'border-[var(--lh-line)] bg-[var(--lh-surface)]'
           )}
         >
-          <MessageSquareWarning className="h-8 w-8 text-cyan-600 dark:text-cyan-300" />
+          <MessageSquareWarning className="h-8 w-8 text-[var(--lh-accent)]" />
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-medium uppercase tracking-wide text-slate-500">
+            <p className="text-[10px] font-medium uppercase tracking-wide text-[var(--lh-muted)]">
               Comments
             </p>
-            <p className="text-lg font-bold text-slate-900 dark:text-white">
+            <p className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
               {comments.total.toLocaleString()} total
             </p>
             <Link
               href="/admin/comments"
-              className="text-[11px] font-medium text-cyan-700 underline dark:text-cyan-300"
+              className="text-[11px] font-medium text-[var(--lh-accent)] underline"
             >
               {comments.flagged} flagged · Moderate →
             </Link>
@@ -1113,8 +1056,8 @@ export function AdminDashboardCharts({
         </div>
         <div
           className={cn(
-            'flex items-center gap-3 rounded-xl border p-4',
-            isLight ? 'border-amber-200 bg-amber-50/80' : 'border-amber-500/25 bg-amber-500/10'
+            'flex items-center gap-3 border p-4',
+            'border-[var(--lh-line)] bg-[var(--lh-surface)]'
           )}
         >
           <Clock className="h-8 w-8 text-amber-600 dark:text-amber-300" />
@@ -1135,8 +1078,8 @@ export function AdminDashboardCharts({
         </div>
         <div
           className={cn(
-            'flex items-center gap-3 rounded-xl border p-4',
-            isLight ? 'border-emerald-200 bg-emerald-50/80' : 'border-emerald-500/25 bg-emerald-500/10'
+            'flex items-center gap-3 border p-4',
+            'border-[var(--lh-line)] bg-[var(--lh-accent-soft)]'
           )}
         >
           <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-300" />
@@ -1151,8 +1094,8 @@ export function AdminDashboardCharts({
         </div>
         <div
           className={cn(
-            'flex items-center gap-3 rounded-xl border p-4',
-            isLight ? 'border-red-200 bg-red-50/80' : 'border-red-500/25 bg-red-500/10'
+            'flex items-center gap-3 border p-4',
+            'border-red-200 bg-red-50/80 dark:border-red-900 dark:bg-red-950/30'
           )}
         >
           <XCircle className="h-8 w-8 text-red-600 dark:text-red-300" />
@@ -1169,26 +1112,26 @@ export function AdminDashboardCharts({
 
       <div
         className={cn(
-          'grid grid-cols-2 gap-2 rounded-xl border p-3 sm:grid-cols-4',
-          isLight ? 'border-slate-200 bg-slate-50' : 'border-cyan-500/10 bg-[#070d16]/40'
+          'grid grid-cols-2 gap-2 border p-3 sm:grid-cols-4',
+          'border-[var(--lh-line)] bg-[var(--lh-surface)]'
         )}
       >
         <div>
-          <p className="text-[9px] uppercase text-slate-500">DAU</p>
+          <p className="text-[9px] uppercase text-[var(--lh-muted)]">DAU</p>
           <p className="text-sm font-semibold">{legacy.dau}</p>
         </div>
         <div>
-          <p className="text-[9px] uppercase text-slate-500">MAU (30d)</p>
+          <p className="text-[9px] uppercase text-[var(--lh-muted)]">MAU (30d)</p>
           <p className="text-sm font-semibold">{legacy.mau}</p>
         </div>
         <div>
-          <p className="text-[9px] uppercase text-slate-500">Rejection rate</p>
+          <p className="text-[9px] uppercase text-[var(--lh-muted)]">Rejection rate</p>
           <p className="text-sm font-semibold">
             {(legacy.rejectionRate * 100).toFixed(1)}%
           </p>
         </div>
         <div>
-          <p className="text-[9px] uppercase text-slate-500">Total likes (sum)</p>
+          <p className="text-[9px] uppercase text-[var(--lh-muted)]">Total likes (sum)</p>
           <p className="text-sm font-semibold">{overview.totalLikes.toLocaleString()}</p>
         </div>
       </div>

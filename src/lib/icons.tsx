@@ -27,6 +27,7 @@ import Heart from 'lucide-react/dist/esm/icons/heart.js';
 import Home from 'lucide-react/dist/esm/icons/home.js';
 import ImageIcon from 'lucide-react/dist/esm/icons/image.js';
 import Lightbulb from 'lucide-react/dist/esm/icons/lightbulb.js';
+import LayoutDashboard from 'lucide-react/dist/esm/icons/layout-dashboard.js';
 import Link2 from 'lucide-react/dist/esm/icons/link-2.js';
 import Lock from 'lucide-react/dist/esm/icons/lock.js';
 import LockOpen from 'lucide-react/dist/esm/icons/lock-open.js';
@@ -78,6 +79,7 @@ function wrap(Icon: LucideIcon): LucideIcon {
 
 export const ICONS = {
   home: wrap(Home),
+  dashboard: wrap(LayoutDashboard),
   explore: wrap(Compass),
   post: wrap(PlusCircle),
   notifications: wrap(Bell),

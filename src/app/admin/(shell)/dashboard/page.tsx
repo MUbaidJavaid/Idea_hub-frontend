@@ -5,15 +5,13 @@ import { RotateCw } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 
 import { AdminDashboardCharts } from '@/components/admin/AdminDashboardCharts';
-import { useAdminTheme } from '@/components/admin/AdminThemeContext';
-import { cn } from '@/components/ui/cn';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { cn } from '@/components/ui/cn';
 import { adminApi } from '@/lib/api/admin.api';
 import { extractApiError } from '@/lib/api/errors';
 
 export default function AdminDashboardPage() {
-  const { isLight } = useAdminTheme();
   const statsQ = useQuery({
     queryKey: ['admin', 'stats'],
     queryFn: () => adminApi.getStats(),
@@ -22,25 +20,24 @@ export default function AdminDashboardPage() {
     refetchOnWindowFocus: true,
   });
 
-  const sk = isLight ? 'bg-slate-200/80' : 'bg-cyan-500/10';
   const now = new Date();
 
   if (statsQ.isLoading) {
     return (
-      <div className="w-full min-w-0 space-y-2">
-        <Skeleton className={cn('h-7 w-48 rounded-md', sk)} />
-        <div className="grid min-w-0 grid-cols-2 gap-2 lg:grid-cols-4">
+      <div className="w-full min-w-0 space-y-6">
+        <Skeleton className="h-7 w-48" />
+        <div className="grid min-w-0 grid-cols-2 gap-6 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className={cn('h-[100px] rounded-xl', sk)} />
+            <Skeleton key={i} className="h-[100px]" />
           ))}
         </div>
-        <div className="grid grid-cols-1 gap-2 lg:grid-cols-5">
-          <Skeleton className={cn('h-[280px] rounded-xl lg:col-span-3', sk)} />
-          <Skeleton className={cn('h-[280px] rounded-xl lg:col-span-2', sk)} />
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+          <Skeleton className="h-[280px] lg:col-span-3" />
+          <Skeleton className="h-[280px] lg:col-span-2" />
         </div>
-        <div className="grid min-w-0 grid-cols-1 gap-2 lg:grid-cols-2">
-          <Skeleton className={cn('h-[220px] rounded-xl', sk)} />
-          <Skeleton className={cn('h-[220px] rounded-xl', sk)} />
+        <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
+          <Skeleton className="h-[220px]" />
+          <Skeleton className="h-[220px]" />
         </div>
       </div>
     );
@@ -48,12 +45,9 @@ export default function AdminDashboardPage() {
 
   if (statsQ.isError || !statsQ.data) {
     return (
-      <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-6 text-center text-sm text-red-200">
+      <div className="border border-red-200 bg-red-50 p-6 text-center text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
         <p>{extractApiError(statsQ.error)}</p>
-        <Button
-          className="mt-3 border-cyan-500/30 bg-cyan-500/10 text-xs text-cyan-200 hover:bg-cyan-500/20"
-          onClick={() => void statsQ.refetch()}
-        >
+        <Button className="mt-3" onClick={() => void statsQ.refetch()}>
           Retry
         </Button>
       </div>
@@ -62,25 +56,13 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="w-full min-w-0 max-w-full">
-      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mb-8 flex flex-col gap-2 border-b border-[var(--lh-line)] pb-8 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p
-            className={cn(
-              'mb-1 text-[10px] font-semibold uppercase tracking-[0.2em]',
-              isLight ? 'text-slate-500' : 'text-slate-500'
-            )}
-          >
-            Admin dashboard · Idea Hub
-          </p>
-          <h1
-            className={cn(
-              'text-xl font-bold tracking-tight md:text-2xl',
-              isLight ? 'text-slate-900' : 'text-white'
-            )}
-          >
+          <p className="landing-eyebrow">Admin dashboard · Idea Hub</p>
+          <h1 className="landing-display mt-2 text-2xl font-semibold tracking-tight text-[var(--lh-ink)] md:text-3xl">
             Overview
           </h1>
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-slate-500">
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] text-[var(--lh-muted)]">
             <span>
               Last updated:{' '}
               {statsQ.dataUpdatedAt
@@ -102,12 +84,7 @@ export default function AdminDashboardPage() {
             </Button>
           </div>
         </div>
-        <p
-          className={cn(
-            'text-xs tabular-nums',
-            isLight ? 'text-slate-500' : 'text-slate-400'
-          )}
-        >
+        <p className="text-xs tabular-nums text-[var(--lh-muted)]">
           {format(now, 'EEEE, MMM d, yyyy · h:mm a')}
         </p>
       </div>

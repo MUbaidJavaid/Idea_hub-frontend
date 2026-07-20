@@ -1,10 +1,11 @@
 'use client';
 
-import { ChevronDown, Lightbulb, LogOut, Settings2 } from 'lucide-react';
+import { ChevronDown, LogOut, Settings2 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useRef, useState, type FormEvent } from 'react';
 
+import { IdeaHubMark } from '@/components/brand/IdeaHubLogo';
 import { MessagesNavLink } from '@/components/messages/MessagesNavLink';
 import { NotificationBell } from '@/components/notifications/NotificationBell';
 import { Button } from '@/components/ui/Button';
@@ -24,14 +25,13 @@ export function IdeahubLogo({ showWordmark = true }: { showWordmark?: boolean })
   return (
     <Link
       href="/feed"
-      className="flex min-w-0 items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-brand-300"
+      className="flex min-w-0 items-center gap-2.5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--lh-ink)]/20"
+      aria-label="Idea Hub home"
     >
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-btn bg-brand/10 text-brand md:h-9 md:w-9">
-        <Lightbulb size={20} strokeWidth={1.5} aria-hidden />
-      </span>
+      <IdeaHubMark size={showWordmark ? 32 : 28} />
       {showWordmark ? (
-        <span className="font-display truncate text-base font-semibold tracking-tight text-[var(--color-text-primary)] md:text-lg">
-          Ideas Hub
+        <span className="landing-display truncate text-base font-semibold tracking-tight text-[var(--lh-ink)] md:text-lg">
+          Idea Hub
         </span>
       ) : null}
     </Link>
@@ -188,7 +188,7 @@ export function Navbar() {
             }
             openCreate('none');
           }}
-          className="-mt-3 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand text-white shadow-lg ring-4 ring-[var(--color-bg)] dark:ring-[#18191A]"
+          className="-mt-3 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--lh-ink)] text-[var(--lh-bg)] ring-4 ring-[var(--color-bg)]"
           aria-label="Create idea"
         >
           <ICONS.post size={28} strokeWidth={1.5} />

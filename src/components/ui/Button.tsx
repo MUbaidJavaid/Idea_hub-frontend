@@ -15,23 +15,23 @@ type Size = 'sm' | 'md' | 'lg';
 
 const variants: Record<Variant, string> = {
   primary:
-    'bg-brand text-white shadow-sm hover:bg-brand-700 focus-visible:ring-brand-300',
+    'bg-[var(--lh-ink)] text-[var(--lh-bg)] hover:opacity-90 focus-visible:ring-[var(--lh-ink)]/30',
   secondary:
-    'border border-[var(--color-border)] bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)] hover:bg-[var(--color-border-light)] focus-visible:ring-brand-200 dark:border-gray-600 dark:hover:bg-gray-700/50',
+    'border border-[var(--color-border)] bg-transparent text-[var(--color-text-primary)] hover:bg-[var(--color-surface-elevated)] focus-visible:ring-brand-200',
   ghost:
-    'text-[var(--color-text-secondary)] hover:bg-[var(--color-border-light)] hover:text-[var(--color-text-primary)] dark:hover:bg-gray-700/40',
+    'text-[var(--color-text-secondary)] hover:bg-[var(--color-border-light)] hover:text-[var(--color-text-primary)]',
   danger:
     'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-300',
 };
 
 const sizes: Record<Size, string> = {
-  sm: 'min-h-10 px-3 py-1.5 text-xs',
-  md: 'min-h-11 px-4 py-2 text-sm',
+  sm: 'min-h-9 px-3.5 py-1.5 text-xs',
+  md: 'min-h-11 px-5 py-2 text-sm',
   lg: 'min-h-12 px-6 py-3 text-base',
 };
 
 const base =
-  'inline-flex select-none items-center justify-center gap-2 rounded-btn font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--color-bg)] disabled:pointer-events-none disabled:opacity-50 active:scale-95 dark:focus-visible:ring-offset-[var(--color-bg)]';
+  'inline-flex select-none items-center justify-center gap-2 rounded-pill font-medium tracking-tight transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--color-bg)] disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -62,7 +62,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) {
     const loaderClass =
       variant === 'primary' || variant === 'danger'
-        ? 'text-white'
+        ? 'text-[var(--lh-bg)]'
         : 'text-brand';
 
     if (asChild) {

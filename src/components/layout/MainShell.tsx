@@ -12,6 +12,7 @@ import { usersApi } from '@/lib/api/users.api';
 import type { IUser } from '@/types/api';
 
 import { AICoachWidget } from '@/components/coach/AICoachWidget';
+import { IdeaHubMark } from '@/components/brand/IdeaHubLogo';
 import { CreateIdeaModal } from '@/components/feed/CreateIdeaModal';
 import { StreakCounter } from '@/components/gamification/StreakCounter';
 import { WeeklyChallenge } from '@/components/gamification/WeeklyChallenge';
@@ -28,6 +29,7 @@ import { useUiStore } from '@/store/uiStore';
 
 const nav = [
   { href: '/feed', label: 'Home', icon: ICONS.home },
+  { href: '/dashboard', label: 'Dashboard', icon: ICONS.dashboard },
   { href: '/search', label: 'Explore', icon: ICONS.explore },
   { href: '/messages', label: 'Messages', icon: ICONS.messages },
   { href: '/marketplace', label: 'Marketplace', icon: ICONS.marketplace },
@@ -161,8 +163,8 @@ function RightSidebar() {
   return (
     <aside className="hidden w-[320px] shrink-0 xl:block">
       <div className="fixed top-[calc(4rem+0.75rem)] h-[calc(100dvh-4rem-1.5rem)] w-[300px] overflow-y-auto pr-2">
-        <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm dark:border-slate-700/50 dark:bg-[#18191a]">
-          <h3 className="text-sm font-bold text-[var(--text)]">
+        <section className="border-b border-[var(--lh-line)] pb-5">
+          <h3 className="landing-display text-sm font-semibold text-[var(--lh-ink)]">
             Suggested collaborators
           </h3>
           <ul className="mt-3 space-y-3">
@@ -207,8 +209,8 @@ function RightSidebar() {
                           className={cn(
                             'shrink-0 rounded-lg px-3 py-1.5 text-xs font-semibold transition',
                             isFollowing
-                              ? 'border border-[var(--border)] bg-transparent text-[var(--text)] hover:bg-surface2 dark:border-slate-600 dark:hover:bg-[#242526]'
-                              : 'bg-brand text-white hover:bg-brand-700 dark:hover:bg-indigo-500',
+                              ? 'rounded-full border border-[var(--lh-line)] bg-transparent text-[var(--lh-ink)] hover:bg-[var(--lh-surface)]'
+                              : 'rounded-full bg-[var(--lh-ink)] text-[var(--lh-bg)] hover:opacity-90',
                             followMut.isPending && 'opacity-70'
                           )}
                         >
@@ -219,7 +221,7 @@ function RightSidebar() {
                   ) : (
                     <Link
                       href="/login"
-                      className="shrink-0 rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-700 dark:hover:bg-indigo-500"
+                      className="shrink-0 rounded-full bg-[var(--lh-ink)] px-3 py-1.5 text-xs font-semibold text-[var(--lh-bg)] hover:opacity-90"
                     >
                       Follow
                     </Link>
@@ -234,8 +236,8 @@ function RightSidebar() {
           </ul>
         </section>
 
-        <section className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm dark:border-slate-700/50 dark:bg-[#18191a]">
-          <h3 className="text-sm font-bold text-[var(--text)]">
+        <section className="mt-6 border-b border-[var(--lh-line)] pb-5">
+          <h3 className="landing-display text-sm font-semibold text-[var(--lh-ink)]">
             Trending ideas
           </h3>
           <ol className="mt-3 space-y-2">
@@ -244,7 +246,7 @@ function RightSidebar() {
                 <li key={idea._id}>
                   <Link
                     href={`/ideas/${idea._id}`}
-                    className="flex gap-2 text-sm hover:text-brand dark:hover:text-indigo-400"
+                    className="flex gap-2 text-sm hover:text-[var(--lh-accent)]"
                   >
                     <span className="font-bold text-[var(--text-muted)]">
                       {i + 1}
@@ -264,14 +266,14 @@ function RightSidebar() {
           </ol>
         </section>
 
-        <section className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm dark:border-slate-700/50 dark:bg-[#18191a]">
-          <h3 className="text-sm font-bold text-[var(--text)]">
-            <span className="inline-flex items-center gap-1">
-              <Flame className="h-4 w-4 text-amber-500" aria-hidden />
+        <section className="mt-6 pb-2">
+          <h3 className="landing-display text-sm font-semibold text-[var(--lh-ink)]">
+            <span className="inline-flex items-center gap-1.5">
+              <Flame className="h-4 w-4 text-[var(--lh-accent)]" aria-hidden />
               Trending tags
             </span>
           </h3>
-          <p className="mt-1 text-[10px] text-[var(--text-muted)]">
+          <p className="mt-1 text-[10px] text-[var(--lh-muted)]">
             Refreshed every ~15 min from real activity
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -280,31 +282,31 @@ function RightSidebar() {
                 <Link
                   key={tag}
                   href={`/feed?tag=${encodeURIComponent(tag)}`}
-                  className="rounded-full bg-surface2 px-3 py-1 text-xs font-medium text-[var(--text)] hover:bg-brand/15 dark:bg-[#242526] dark:hover:bg-indigo-500/20"
+                  className="rounded-full border border-[var(--lh-line)] px-3 py-1 text-xs font-medium text-[var(--lh-ink)] hover:bg-[var(--lh-surface)]"
                 >
                   #{tag}
                 </Link>
               ))
             ) : (
-              <span className="text-sm text-[var(--text-muted)]">—</span>
+              <span className="text-sm text-[var(--lh-muted)]">—</span>
             )}
           </div>
         </section>
 
-        <footer className="mt-6 flex flex-wrap justify-center gap-2 text-[10px] text-[var(--text-muted)]">
+        <footer className="mt-6 flex flex-wrap justify-center gap-2 text-[10px] text-[var(--lh-muted)]">
           <Link href="/pricing" className="hover:underline">
             Pricing
           </Link>
           <span>·</span>
-          <Link href="/feed" className="hover:underline">
+          <Link href="/about" className="hover:underline">
             About
           </Link>
           <span>·</span>
-          <Link href="/feed" className="hover:underline">
+          <Link href="/privacy" className="hover:underline">
             Privacy
           </Link>
           <span>·</span>
-          <Link href="/feed" className="hover:underline">
+          <Link href="/terms" className="hover:underline">
             Terms
           </Link>
         </footer>
@@ -352,22 +354,16 @@ export function MainShell({ children }: { children: React.ReactNode }) {
     <div className="flex h-dvh max-h-dvh min-h-0 min-w-0 flex-col overflow-hidden bg-[var(--bg)] text-[var(--text)]">
       <div className="flex min-h-0 min-w-0 flex-1 justify-center overflow-hidden">
         {/* Left — full */}
-        <aside className="fixed left-0 top-0 z-30 hidden w-[280px] flex-col border-r border-[var(--border)] bg-[var(--surface)] pt-2 dark:border-slate-700/50 dark:bg-[#18191a] xl:top-16 xl:flex xl:h-[calc(100dvh-4rem)]">
+        <aside className="fixed left-0 top-0 z-30 hidden w-[280px] flex-col border-r border-[var(--lh-line)] bg-[var(--lh-bg)] pt-2 xl:top-16 xl:flex xl:h-[calc(100dvh-4rem)]">
           <div className="shrink-0">
-           {/* <Link
-              href="/feed"
-              className="block px-4 pb-3 text-2xl font-bold text-brand dark:text-indigo-400"
-            >
-              Ideas Hub
-            </Link> */}
             <div className="px-2 pb-1">
               <div className="flex items-center gap-1 px-3 py-2">
                 <Link
                   href={profileHref}
-                  className="flex min-w-0 flex-1 items-center gap-2 rounded-xl py-1 pl-0 pr-1 transition hover:bg-surface2/80 dark:hover:bg-[#242526]/80"
+                  className="flex min-w-0 flex-1 items-center gap-2 rounded-full py-1 pl-0 pr-1 transition hover:bg-[var(--lh-surface)]"
                 >
                   <div
-                    className="h-10 w-10 shrink-0 rounded-full bg-surface2 bg-cover bg-center ring-2 ring-brand/20"
+                    className="h-10 w-10 shrink-0 rounded-full bg-[var(--lh-surface)] bg-cover bg-center ring-1 ring-[var(--lh-line)]"
                     style={
                       user?.avatarUrl
                         ? { backgroundImage: `url(${user.avatarUrl})` }
@@ -375,10 +371,10 @@ export function MainShell({ children }: { children: React.ReactNode }) {
                     }
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-bold">
+                    <p className="truncate text-sm font-semibold text-[var(--lh-ink)]">
                       {user?.fullName ?? 'Guest'}
                     </p>
-                    <p className="truncate text-xs text-[var(--text-muted)]">
+                    <p className="truncate text-xs text-[var(--lh-muted)]">
                       @{user?.username ?? 'guest'}
                     </p>
                   </div>
@@ -433,10 +429,10 @@ export function MainShell({ children }: { children: React.ReactNode }) {
                     key={item.href}
                     href={href}
                     className={cn(
-                      'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition',
+                      'flex items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium transition',
                       active
-                        ? 'bg-brand/10 text-brand dark:bg-indigo-500/15 dark:text-indigo-300'
-                        : 'text-[var(--text-muted)] hover:bg-surface2 dark:hover:bg-[#242526]'
+                        ? 'bg-[var(--lh-accent-soft)] text-[var(--lh-accent)]'
+                        : 'text-[var(--lh-muted)] hover:bg-[var(--lh-surface)] hover:text-[var(--lh-ink)]'
                     )}
                   >
                     <span className="relative">
@@ -457,7 +453,7 @@ export function MainShell({ children }: { children: React.ReactNode }) {
               onClick={() =>
                 setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
               }
-              className="mb-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--text-muted)] transition hover:bg-surface2 dark:hover:bg-[#242526]"
+              className="mb-2 flex w-full items-center gap-3 rounded-full px-3 py-2.5 text-sm font-medium text-[var(--lh-muted)] transition hover:bg-[var(--lh-surface)] hover:text-[var(--lh-ink)]"
               aria-label="Toggle color theme"
             >
               {mounted ? (
@@ -465,13 +461,13 @@ export function MainShell({ children }: { children: React.ReactNode }) {
                   <Sun
                     size={20}
                     strokeWidth={1.5}
-                    className="text-amber-500"
+                    className="text-[var(--lh-accent)]"
                   />
                 ) : (
                   <Moon
                     size={20}
                     strokeWidth={1.5}
-                    className="text-brand"
+                    className="text-[var(--lh-ink)]"
                   />
                 )
               ) : (
@@ -481,11 +477,11 @@ export function MainShell({ children }: { children: React.ReactNode }) {
             </button>
           </nav>
 
-          <div className="shrink-0 space-y-2 border-t border-[var(--border)] bg-[var(--surface)] p-3 dark:border-slate-700/50 dark:bg-[#18191a]">
+          <div className="shrink-0 space-y-2 border-t border-[var(--lh-line)] bg-[var(--lh-bg)] p-3">
             <button
               type="button"
               onClick={() => openCreate('none')}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand py-3 text-sm font-bold text-white shadow-md transition hover:bg-brand-700 dark:hover:bg-indigo-500"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-[var(--lh-ink)] py-3 text-sm font-semibold text-[var(--lh-bg)] transition hover:opacity-90"
             >
               <ICONS.post size={20} />
               Post an Idea
@@ -494,7 +490,7 @@ export function MainShell({ children }: { children: React.ReactNode }) {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--border)] py-2.5 text-sm font-semibold text-[var(--text-muted)] transition hover:bg-red-500/10 hover:text-red-600 dark:border-slate-600 dark:hover:bg-red-500/15 dark:hover:text-red-400"
+                className="flex w-full items-center justify-center gap-2 rounded-full border border-[var(--lh-line)] py-2.5 text-sm font-medium text-[var(--lh-muted)] transition hover:bg-red-500/10 hover:text-red-600"
               >
                 <LogOut size={18} strokeWidth={2} />
                 Log out
@@ -504,13 +500,9 @@ export function MainShell({ children }: { children: React.ReactNode }) {
         </aside>
 
         {/* Left — icon only tablet */}
-        <aside className="fixed left-0 top-0 z-30 hidden w-[60px] flex-col items-center border-r border-[var(--border)] bg-[var(--surface)] py-3 dark:border-slate-700/50 dark:bg-[#18191a] md:top-[60px] md:flex md:h-[calc(100dvh-60px)] xl:hidden">
-          <Link
-            href="/feed"
-            className="mb-4 text-lg font-bold text-brand"
-            title="Home"
-          >
-            IH
+        <aside className="fixed left-0 top-0 z-30 hidden w-[60px] flex-col items-center border-r border-[var(--lh-line)] bg-[var(--lh-bg)] py-3 md:top-[60px] md:flex md:h-[calc(100dvh-60px)] xl:hidden">
+          <Link href="/feed" className="mb-4" title="Home" aria-label="Idea Hub home">
+            <IdeaHubMark size={28} />
           </Link>
           {nav.map((item) => {
             const Icon = item.icon;
@@ -526,10 +518,10 @@ export function MainShell({ children }: { children: React.ReactNode }) {
                 href={href}
                 title={item.label}
                 className={cn(
-                  'mb-1 rounded-lg p-2.5',
+                  'mb-1 rounded-full p-2.5',
                   active
-                    ? 'bg-brand/15 text-brand'
-                    : 'text-[var(--text-muted)] hover:bg-surface2'
+                    ? 'bg-[var(--lh-accent-soft)] text-[var(--lh-accent)]'
+                    : 'text-[var(--lh-muted)] hover:bg-[var(--lh-surface)]'
                 )}
               >
                 <Icon size={20} />
@@ -540,7 +532,7 @@ export function MainShell({ children }: { children: React.ReactNode }) {
             type="button"
             title="Create"
             onClick={() => openCreate('none')}
-            className="mt-auto rounded-lg bg-brand p-2 text-white"
+            className="mt-auto rounded-full bg-[var(--lh-ink)] p-2.5 text-[var(--lh-bg)]"
           >
             <ICONS.post size={18} />
           </button>

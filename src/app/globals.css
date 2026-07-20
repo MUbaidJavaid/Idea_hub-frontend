@@ -4,21 +4,31 @@
 
 @layer base {
   :root {
-    --color-bg: #f0f2f5;
+    /* App + landing shared tokens (landing-aligned) */
+    --lh-bg: #ffffff;
+    --lh-surface: #f5f5f3;
+    --lh-ink: #0a0a0a;
+    --lh-ink-soft: #262626;
+    --lh-muted: #737373;
+    --lh-line: #e7e7e4;
+    --lh-accent: #0f766e;
+    --lh-accent-soft: rgba(15, 118, 110, 0.08);
+
+    --color-bg: #ffffff;
     --color-surface: #ffffff;
-    --color-surface-elevated: #ffffff;
+    --color-surface-elevated: #f5f5f3;
     --color-surface-overlay: rgba(255, 255, 255, 0.95);
 
-    --color-text-primary: #050505;
-    --color-text-secondary: #65676b;
-    --color-text-muted: #8a8d91;
+    --color-text-primary: #0a0a0a;
+    --color-text-secondary: #525252;
+    --color-text-muted: #737373;
 
-    --color-border: #e4e6ea;
-    --color-border-light: #f0f2f5;
+    --color-border: #e7e7e4;
+    --color-border-light: #f5f5f3;
 
-    --color-brand: #4f46e5;
-    --color-brand-light: #eef2ff;
-    --color-accent: #10b981;
+    --color-brand: #0f766e;
+    --color-brand-light: rgba(15, 118, 110, 0.08);
+    --color-accent: #0f766e;
 
     /* Legacy aliases (existing components) */
     --bg: var(--color-bg);
@@ -29,26 +39,34 @@
     --border: var(--color-border);
     --brand: var(--color-brand);
     --accent: var(--color-accent);
-    --glow: rgba(79, 70, 229, 0.12);
+    --glow: rgba(15, 118, 110, 0.12);
   }
 
   .dark {
-    --color-bg: #18191a;
-    --color-surface: #242526;
-    --color-surface-elevated: #3a3b3c;
-    --color-surface-overlay: rgba(36, 37, 38, 0.97);
+    --lh-bg: #050505;
+    --lh-surface: #111111;
+    --lh-ink: #fafafa;
+    --lh-ink-soft: #e5e5e5;
+    --lh-muted: #a3a3a3;
+    --lh-line: #262626;
+    --lh-accent: #2dd4bf;
+    --lh-accent-soft: rgba(45, 212, 191, 0.1);
 
-    /* Slightly brighter secondary/muted vs old #8a8d91 — better on #18191a / #242526 */
-    --color-text-primary: #f0f2f5;
-    --color-text-secondary: #c4c8ce;
-    --color-text-muted: #a8adb5;
+    --color-bg: #050505;
+    --color-surface: #111111;
+    --color-surface-elevated: #1a1a1a;
+    --color-surface-overlay: rgba(17, 17, 17, 0.97);
 
-    --color-border: #3e4042;
-    --color-border-light: #2d2e2f;
+    --color-text-primary: #fafafa;
+    --color-text-secondary: #d4d4d4;
+    --color-text-muted: #a3a3a3;
 
-    --color-brand: #818cf8;
-    --color-brand-light: #312e81;
-    --color-accent: #34d399;
+    --color-border: #262626;
+    --color-border-light: #1a1a1a;
+
+    --color-brand: #2dd4bf;
+    --color-brand-light: rgba(45, 212, 191, 0.12);
+    --color-accent: #2dd4bf;
 
     --bg: var(--color-bg);
     --surface: var(--color-surface);
@@ -58,7 +76,7 @@
     --border: var(--color-border);
     --brand: var(--color-brand);
     --accent: var(--color-accent);
-    --glow: rgba(129, 140, 248, 0.15);
+    --glow: rgba(45, 212, 191, 0.15);
   }
 
   * {
@@ -120,40 +138,40 @@
 
 @layer components {
   .card {
-    @apply rounded-card border border-[var(--color-border)] bg-[var(--color-surface)] shadow-card;
+    @apply rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)];
   }
   .card-hover {
-    @apply transition-shadow duration-200 hover:shadow-card-hover;
+    @apply transition-colors duration-200 hover:bg-[var(--color-surface-elevated)];
   }
 
   .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-btn font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--color-bg)] disabled:cursor-not-allowed disabled:opacity-50 active:scale-95 dark:focus-visible:ring-offset-[var(--color-bg)];
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-pill font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--color-bg)] disabled:cursor-not-allowed disabled:opacity-50 active:scale-95 dark:focus-visible:ring-offset-[var(--color-bg)];
   }
   .btn-sm {
     @apply btn text-xs px-3 py-1.5;
   }
   .btn-md {
-    @apply btn px-4 py-2 text-sm;
+    @apply btn px-5 py-2.5 text-sm;
   }
   .btn-lg {
     @apply btn px-6 py-3 text-base;
   }
 
   .btn-primary {
-    @apply btn-md bg-brand text-white hover:bg-brand-700;
+    @apply btn-md bg-[var(--lh-ink)] text-[var(--lh-bg)] hover:opacity-90;
   }
   .btn-secondary {
-    @apply btn-md border border-[var(--color-border)] bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)] hover:bg-[var(--color-border-light)] dark:border-gray-600 dark:hover:bg-gray-700/50;
+    @apply btn-md border border-[var(--color-border)] bg-transparent text-[var(--color-text-primary)] hover:bg-[var(--color-surface-elevated)];
   }
   .btn-ghost {
-    @apply btn-md text-[var(--color-text-secondary)] hover:bg-[var(--color-border-light)] hover:text-[var(--color-text-primary)] dark:hover:bg-gray-700/40;
+    @apply btn-md text-[var(--color-text-secondary)] hover:bg-[var(--color-border-light)] hover:text-[var(--color-text-primary)];
   }
   .btn-danger {
     @apply btn-md bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-300;
   }
 
   .input {
-    @apply w-full rounded-btn border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-3 py-2.5 text-sm text-[var(--color-text-primary)] transition-colors duration-150 placeholder:text-[var(--color-text-muted)] focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-300 dark:border-gray-600;
+    @apply w-full rounded-pill border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm text-[var(--color-text-primary)] transition-colors duration-150 placeholder:text-[var(--color-text-muted)] focus:border-[var(--lh-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--lh-ink)]/10;
   }
 
   .avatar {
@@ -204,30 +222,11 @@
   }
 }
 
-/* ——— Landing design system (premium, non-AI) ——— */
+/* ——— Landing shell (uses shared --lh-* from :root) ——— */
 .landing-root {
-  --lh-bg: #ffffff;
-  --lh-surface: #f5f5f3;
-  --lh-ink: #0a0a0a;
-  --lh-ink-soft: #262626;
-  --lh-muted: #737373;
-  --lh-line: #e7e7e4;
-  --lh-accent: #0f766e;
-  --lh-accent-soft: rgba(15, 118, 110, 0.08);
   background: var(--lh-bg);
   color: var(--lh-ink);
   font-feature-settings: 'ss01' on, 'cv11' on;
-}
-
-.dark .landing-root {
-  --lh-bg: #050505;
-  --lh-surface: #111111;
-  --lh-ink: #fafafa;
-  --lh-ink-soft: #e5e5e5;
-  --lh-muted: #a3a3a3;
-  --lh-line: #262626;
-  --lh-accent: #2dd4bf;
-  --lh-accent-soft: rgba(45, 212, 191, 0.1);
 }
 
 .landing-scrollbar {
@@ -314,7 +313,7 @@
     position: absolute;
     inset: -3px;
     border-radius: 9999px;
-    background: conic-gradient(from 0deg, #4f46e5, #10b981, #6366f1, #4f46e5);
+    background: conic-gradient(from 0deg, #0f766e, #2dd4bf, #0a0a0a, #0f766e);
     animation: storySpin 8s linear infinite;
     z-index: 0;
   }

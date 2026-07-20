@@ -103,6 +103,10 @@ declare module 'lucide-react/dist/esm/icons/lightbulb.js' {
   const Icon: import('lucide-react').LucideIcon;
   export default Icon;
 }
+declare module 'lucide-react/dist/esm/icons/layout-dashboard.js' {
+  const Icon: import('lucide-react').LucideIcon;
+  export default Icon;
+}
 declare module 'lucide-react/dist/esm/icons/link-2.js' {
   const Icon: import('lucide-react').LucideIcon;
   export default Icon;

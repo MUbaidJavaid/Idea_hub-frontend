@@ -63,18 +63,18 @@ function UserDashboardInner() {
 
   if (q.isLoading || !user) {
     return (
-      <div className="mx-auto max-w-7xl space-y-6 px-3 py-6 md:px-6">
-        <Skeleton className="h-32 w-full rounded-2xl" />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="mx-auto max-w-7xl space-y-8 px-3 py-6 md:px-6">
+        <Skeleton className="h-28 w-full" />
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-24 rounded-xl" />
+            <Skeleton key={i} className="h-20" />
           ))}
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
-          <Skeleton className="h-72 rounded-2xl lg:col-span-2" />
-          <Skeleton className="h-72 rounded-2xl" />
+          <Skeleton className="h-72 lg:col-span-2" />
+          <Skeleton className="h-72" />
         </div>
-        <Skeleton className="h-64 w-full rounded-2xl" />
+        <Skeleton className="h-64 w-full" />
       </div>
     );
   }
@@ -108,12 +108,12 @@ function UserDashboardInner() {
   const profilePct = Math.round((profileScore / 3) * 100);
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-3 py-6 md:px-6 md:py-8">
+    <div className="mx-auto max-w-7xl space-y-10 px-3 py-6 md:px-6 md:py-10">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-gradient-to-br from-[var(--color-surface)] via-[var(--color-surface)] to-[var(--color-brand-light)]/30 p-6 shadow-sm dark:to-indigo-950/20 md:p-8">
+      <section className="border-b border-[var(--lh-line)] pb-10">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 border-[var(--color-border)] bg-[var(--color-surface-elevated)] shadow-md">
+            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[var(--lh-line)] bg-[var(--lh-surface)]">
               {profile.avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -122,42 +122,37 @@ function UserDashboardInner() {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center text-3xl font-bold text-[var(--color-brand)]">
+                <div className="flex h-full w-full items-center justify-center text-2xl font-semibold text-[var(--lh-ink)]">
                   {profile.fullName.slice(0, 1).toUpperCase()}
                 </div>
               )}
             </div>
             <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl font-bold tracking-tight text-[var(--color-text-primary)] md:text-3xl">
+              <p className="landing-eyebrow">Your overview</p>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <h1 className="landing-display text-2xl font-semibold tracking-tight text-[var(--lh-ink)] md:text-3xl">
                   Welcome back, {firstName(profile.fullName)}
                 </h1>
                 {gm ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:text-amber-200">
-                    <Trophy className="h-3.5 w-3.5" />
+                  <span className="inline-flex items-center gap-1 rounded-full border border-[var(--lh-line)] px-2.5 py-0.5 text-xs font-medium text-[var(--lh-muted)]">
+                    <Trophy className="h-3.5 w-3.5 text-[var(--lh-accent)]" />
                     Lv.{gm.level} {gm.levelTitle}
                   </span>
                 ) : null}
               </div>
-              <p className="mt-1 text-sm text-[var(--color-text-muted)]">
-                @{profile.username} · Your creator overview
+              <p className="mt-1 text-sm text-[var(--lh-muted)]">
+                @{profile.username}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <span
                   className={cn(
-                    'rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide',
-                    effPlan === 'free' &&
-                      'bg-slate-500/15 text-slate-700 dark:text-slate-300',
-                    effPlan === 'pro' &&
-                      'bg-indigo-500/15 text-indigo-800 dark:text-indigo-200',
-                    effPlan === 'investor' &&
-                      'bg-violet-500/15 text-violet-800 dark:text-violet-200'
+                    'rounded-full border border-[var(--lh-line)] px-2.5 py-0.5 text-xs font-medium uppercase tracking-wide text-[var(--lh-ink)]'
                   )}
                 >
                   {effPlan} plan
                 </span>
                 {profile.verifiedInnovator ? (
-                  <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 dark:text-emerald-200">
+                  <span className="rounded-full bg-[var(--lh-accent-soft)] px-2.5 py-0.5 text-xs font-medium text-[var(--lh-accent)]">
                     Verified innovator
                   </span>
                 ) : null}
@@ -183,71 +178,33 @@ function UserDashboardInner() {
 
       {/* KPI row — all API stats */}
       <section aria-label="Your stats">
-        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
-          Performance
-        </h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          <MiniStat
-            icon={Lightbulb}
-            label="Ideas"
-            value={d.stats.totalIdeas}
-            accent="text-violet-600 dark:text-violet-300"
-            bg="bg-violet-500/10"
-          />
-          <MiniStat
-            icon={Heart}
-            label="Likes received"
-            value={d.stats.totalLikes}
-            accent="text-red-600 dark:text-red-300"
-            bg="bg-red-500/10"
-          />
-          <MiniStat
-            icon={Eye}
-            label="Views"
-            value={d.stats.totalViews}
-            accent="text-blue-600 dark:text-blue-300"
-            bg="bg-blue-500/10"
-          />
-          <MiniStat
-            icon={MessageCircle}
-            label="Comments"
-            value={d.stats.totalComments}
-            accent="text-cyan-600 dark:text-cyan-300"
-            bg="bg-cyan-500/10"
-          />
-          <MiniStat
-            icon={Handshake}
-            label="Collabs on ideas"
-            value={d.stats.totalCollaborators}
-            accent="text-amber-600 dark:text-amber-300"
-            bg="bg-amber-500/10"
-          />
-          <MiniStat
-            icon={Users}
-            label="Followers"
-            value={d.stats.totalFollowers}
-            accent="text-emerald-600 dark:text-emerald-300"
-            bg="bg-emerald-500/10"
-          />
+        <h2 className="landing-eyebrow mb-5">Performance</h2>
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+          <MiniStat icon={Lightbulb} label="Ideas" value={d.stats.totalIdeas} />
+          <MiniStat icon={Heart} label="Likes received" value={d.stats.totalLikes} />
+          <MiniStat icon={Eye} label="Views" value={d.stats.totalViews} />
+          <MiniStat icon={MessageCircle} label="Comments" value={d.stats.totalComments} />
+          <MiniStat icon={Handshake} label="Collabs on ideas" value={d.stats.totalCollaborators} />
+          <MiniStat icon={Users} label="Followers" value={d.stats.totalFollowers} />
         </div>
       </section>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Main column */}
         <div className="space-y-6 lg:col-span-2">
-          <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm dark:border-gray-700/80">
+          <section className="border border-[var(--lh-line)] bg-[var(--lh-bg)] p-5 md:p-6">
             <div className="mb-4 flex items-start justify-between gap-3">
               <div>
-                <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+                <h2 className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
                   Idea pipeline
                 </h2>
-                <p className="mt-0.5 text-xs text-[var(--color-text-muted)]">
+                <p className="mt-0.5 text-xs text-[var(--lh-muted)]">
                   Status counts for ideas you own
                 </p>
               </div>
               <Link
                 href="/my-ideas"
-                className="inline-flex items-center gap-1 text-sm font-medium text-[var(--color-brand)] hover:underline"
+                className="inline-flex items-center gap-1 text-sm font-medium text-[var(--lh-accent)] hover:underline"
               >
                 Manage
                 <ArrowUpRight className="h-4 w-4" />
@@ -261,17 +218,17 @@ function UserDashboardInner() {
             </div>
           </section>
 
-          <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm dark:border-gray-700/80">
+          <section className="border border-[var(--lh-line)] bg-[var(--lh-bg)] p-5 md:p-6">
             <div className="mb-3 flex items-center justify-between">
               <div>
-                <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+                <h2 className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
                   Weekly views
                 </h2>
-                <p className="text-xs text-[var(--color-text-muted)]">
+                <p className="mt-0.5 text-xs text-[var(--lh-muted)]">
                   Unique view events on your ideas · last 7 days
                 </p>
               </div>
-              <TrendingUp className="h-5 w-5 text-[var(--color-text-muted)] opacity-60" />
+              <TrendingUp className="h-5 w-5 text-[var(--lh-muted)] opacity-50" />
             </div>
             <div className="h-56 w-full md:h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -281,35 +238,36 @@ function UserDashboardInner() {
                 >
                   <CartesianGrid
                     strokeDasharray="3 6"
-                    className="stroke-[var(--color-border)] opacity-50"
+                    stroke="var(--lh-line)"
+                    opacity={0.7}
                   />
                   <XAxis
                     dataKey="label"
-                    tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }}
+                    tick={{ fontSize: 11, fill: 'var(--lh-muted)' }}
                     axisLine={false}
                     tickLine={false}
                   />
                   <YAxis
-                    tick={{ fontSize: 11, fill: 'var(--color-text-muted)' }}
+                    tick={{ fontSize: 11, fill: 'var(--lh-muted)' }}
                     width={36}
                     axisLine={false}
                     tickLine={false}
                   />
                   <Tooltip
-                    cursor={{ fill: 'var(--color-brand-light)', opacity: 0.3 }}
+                    cursor={{ fill: 'var(--lh-accent-soft)' }}
                     contentStyle={{
-                      borderRadius: 8,
+                      borderRadius: 0,
                       fontSize: 12,
-                      border: '1px solid var(--color-border)',
-                      background: 'var(--color-surface-elevated)',
-                      color: 'var(--color-text-primary)',
+                      border: '1px solid var(--lh-line)',
+                      background: 'var(--lh-bg)',
+                      color: 'var(--lh-ink)',
                     }}
                   />
                   <Bar
                     dataKey="views"
-                    fill="var(--color-brand)"
-                    radius={[6, 6, 0, 0]}
-                    maxBarSize={40}
+                    fill="var(--lh-accent)"
+                    radius={[2, 2, 0, 0]}
+                    maxBarSize={36}
                   />
                 </BarChart>
               </ResponsiveContainer>
@@ -317,15 +275,15 @@ function UserDashboardInner() {
           </section>
 
           {d.ideas.topIdea ? (
-            <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm dark:border-gray-700/80">
-              <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+            <section className="border border-[var(--lh-line)] bg-[var(--lh-bg)] p-5 md:p-6">
+              <h2 className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
                 Top performing idea
               </h2>
-              <p className="mt-0.5 text-xs text-[var(--color-text-muted)]">
+              <p className="mt-0.5 text-xs text-[var(--lh-muted)]">
                 Highest engagement among your published ideas
               </p>
               <div className="mt-4 flex flex-col gap-4 sm:flex-row">
-                <div className="h-28 w-full shrink-0 overflow-hidden rounded-xl bg-slate-200 sm:h-28 sm:w-36 dark:bg-slate-700">
+                <div className="h-28 w-full shrink-0 overflow-hidden border border-[var(--lh-line)] bg-[var(--lh-surface)] sm:h-28 sm:w-36">
                   {d.ideas.topIdea.media?.[0]?.thumbnailUrl ||
                   d.ideas.topIdea.media?.[0]?.cdnUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -339,45 +297,45 @@ function UserDashboardInner() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-[var(--color-text-muted)]">
+                    <div className="flex h-full items-center justify-center text-[var(--lh-muted)]">
                       <Lightbulb className="h-10 w-10 opacity-40" />
                     </div>
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-[var(--color-text-primary)]">
+                  <p className="font-semibold text-[var(--lh-ink)]">
                     {d.ideas.topIdea.title}
                   </p>
-                  <p className="text-xs text-[var(--color-text-muted)]">
+                  <p className="text-xs text-[var(--lh-muted)]">
                     {d.ideas.topIdea.category} · {d.ideas.topIdea.status}
                   </p>
-                  <div className="mt-2 flex flex-wrap gap-4 text-sm text-[var(--color-text-secondary)]">
+                  <div className="mt-2 flex flex-wrap gap-4 text-sm text-[var(--lh-ink-soft)]">
                     <span className="inline-flex items-center gap-1.5">
-                      <Heart className="h-4 w-4 text-red-500/90" />{' '}
+                      <Heart className="h-4 w-4 text-[var(--lh-muted)]" />{' '}
                       {d.ideas.topIdea.likeCount}
                     </span>
                     <span className="inline-flex items-center gap-1.5">
-                      <Eye className="h-4 w-4 text-blue-500/90" />{' '}
+                      <Eye className="h-4 w-4 text-[var(--lh-muted)]" />{' '}
                       {d.ideas.topIdea.viewCount}
                     </span>
                     <span className="inline-flex items-center gap-1.5">
-                      <MessageCircle className="h-4 w-4 text-cyan-500/90" />{' '}
+                      <MessageCircle className="h-4 w-4 text-[var(--lh-muted)]" />{' '}
                       {d.ideas.topIdea.commentCount}
                     </span>
                   </div>
                   <div className="mt-3">
-                    <div className="flex items-center justify-between text-[10px] text-[var(--color-text-muted)]">
+                    <div className="flex items-center justify-between text-[10px] text-[var(--lh-muted)]">
                       <span>Validation score</span>
-                      <span className="font-medium tabular-nums text-[var(--color-text-primary)]">
+                      <span className="font-medium tabular-nums text-[var(--lh-ink)]">
                         {Math.round(
                           Number(d.ideas.topIdea.contentScanScore ?? 0) * 100
                         )}
                         /100
                       </span>
                     </div>
-                    <div className="mt-1 h-2 w-full max-w-md overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+                    <div className="mt-1 h-1.5 w-full max-w-md overflow-hidden bg-[var(--lh-line)]">
                       <div
-                        className="h-full rounded-full bg-[var(--color-brand)] transition-all"
+                        className="h-full bg-[var(--lh-accent)] transition-all"
                         style={{
                           width: `${Math.min(
                             100,
@@ -409,12 +367,12 @@ function UserDashboardInner() {
               </div>
             </section>
           ) : (
-            <section className="rounded-2xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)]/80 p-8 text-center dark:border-gray-700">
-              <Lightbulb className="mx-auto h-10 w-10 text-[var(--color-text-muted)] opacity-50" />
-              <p className="mt-3 font-medium text-[var(--color-text-primary)]">
+            <section className="border border-dashed border-[var(--lh-line)] bg-[var(--lh-surface)] p-8 text-center">
+              <Lightbulb className="mx-auto h-10 w-10 text-[var(--lh-muted)] opacity-50" />
+              <p className="mt-3 font-medium text-[var(--lh-ink)]">
                 No published ideas yet
               </p>
-              <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+              <p className="mt-1 text-sm text-[var(--lh-muted)]">
                 Publish your first idea to see performance and validation scores
                 here.
               </p>
@@ -430,14 +388,14 @@ function UserDashboardInner() {
 
         {/* Sidebar */}
         <aside className="space-y-6">
-          <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm dark:border-gray-700/80">
-            <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+          <section className="border border-[var(--lh-line)] bg-[var(--lh-bg)] p-5 md:p-6">
+            <h2 className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
               Shortcuts
             </h2>
-            <p className="mt-0.5 text-xs text-[var(--color-text-muted)]">
+            <p className="mt-0.5 text-xs text-[var(--lh-muted)]">
               Jump to key areas
             </p>
-            <ul className="mt-4 space-y-1">
+            <ul className="mt-4 divide-y divide-[var(--lh-line)]">
               <Shortcut href="/feed" icon={LayoutGrid} label="Feed" />
               <Shortcut href="/marketplace" icon={ShoppingBag} label="Marketplace" />
               <Shortcut href="/collaborations" icon={Handshake} label="Collaborations" />
@@ -449,24 +407,24 @@ function UserDashboardInner() {
             </ul>
           </section>
 
-          <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm dark:border-gray-700/80">
-            <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+          <section className="border border-[var(--lh-line)] bg-[var(--lh-bg)] p-5 md:p-6">
+            <h2 className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
               Profile
             </h2>
             <div className="mt-3">
-              <div className="flex items-center justify-between text-xs text-[var(--color-text-muted)]">
+              <div className="flex items-center justify-between text-xs text-[var(--lh-muted)]">
                 <span>Profile strength</span>
-                <span className="font-semibold text-[var(--color-text-primary)]">
+                <span className="font-semibold text-[var(--lh-ink)]">
                   {profilePct}%
                 </span>
               </div>
-              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+              <div className="mt-1.5 h-1.5 overflow-hidden bg-[var(--lh-line)]">
                 <div
-                  className="h-full rounded-full bg-emerald-500"
+                  className="h-full bg-[var(--lh-accent)]"
                   style={{ width: `${profilePct}%` }}
                 />
               </div>
-              <p className="mt-2 text-xs text-[var(--color-text-muted)]">
+              <p className="mt-2 text-xs text-[var(--lh-muted)]">
                 {!profile.avatarUrl && 'Add an avatar. '}
                 {!profile.bio?.trim() && 'Write a short bio. '}
                 {!profile.skills?.length && 'Add skills. '}
@@ -474,7 +432,7 @@ function UserDashboardInner() {
               </p>
               <Link
                 href="/account/settings"
-                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-brand)] hover:underline"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--lh-accent)] hover:underline"
               >
                 <Settings className="h-4 w-4" />
                 Edit profile
@@ -482,19 +440,19 @@ function UserDashboardInner() {
             </div>
           </section>
 
-          <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm dark:border-gray-700/80">
-            <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+          <section className="border border-[var(--lh-line)] bg-[var(--lh-bg)] p-5 md:p-6">
+            <h2 className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
               Subscription
             </h2>
-            <p className="mt-2 text-2xl font-bold capitalize text-[var(--color-text-primary)]">
+            <p className="mt-2 landing-display text-2xl font-semibold capitalize text-[var(--lh-ink)]">
               {effPlan}
             </p>
             {effPlan === 'free' ? (
-              <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+              <p className="mt-1 text-sm text-[var(--lh-muted)]">
                 Upgrade for unlimited ideas, marketplace listings, and more.
               </p>
             ) : (
-              <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+              <p className="mt-1 text-sm text-[var(--lh-muted)]">
                 {profile.subscription?.currentPeriodEnd ? (
                   <>
                     Renews{' '}
@@ -523,21 +481,21 @@ function UserDashboardInner() {
 
       {/* Activity + collabs */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm dark:border-gray-700/80">
+        <section className="border border-[var(--lh-line)] bg-[var(--lh-bg)] p-5 md:p-6">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+            <h2 className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
               Recent activity
             </h2>
             <Link
               href="/notifications"
-              className="text-xs font-medium text-[var(--color-brand)] hover:underline"
+              className="text-xs font-medium text-[var(--lh-accent)] hover:underline"
             >
               See all
             </Link>
           </div>
-          <ul className="space-y-0 divide-y divide-[var(--color-border)] dark:divide-gray-700/80">
+          <ul className="space-y-0 divide-y divide-[var(--lh-line)]">
             {d.recentActivity.length === 0 ? (
-              <li className="py-8 text-center text-sm text-[var(--color-text-muted)]">
+              <li className="py-8 text-center text-sm text-[var(--lh-muted)]">
                 No likes, comments, or follows yet. Keep publishing!
               </li>
             ) : (
@@ -545,7 +503,7 @@ function UserDashboardInner() {
                 <li key={`${a.type}-${i}-${a.createdAt}`} className="flex gap-3 py-3 first:pt-0">
                   <ActivityIcon type={a.type} />
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm text-[var(--color-text-primary)]">
+                    <p className="text-sm text-[var(--lh-ink)]">
                       <span className="font-medium">
                         @
                         {typeof a.from === 'object' ? a.from.username : 'user'}
@@ -558,7 +516,7 @@ function UserDashboardInner() {
                         ? ` “${a.idea.title.slice(0, 48)}${a.idea.title.length > 48 ? '…' : ''}”`
                         : ''}
                     </p>
-                    <p className="text-xs text-[var(--color-text-muted)]">
+                    <p className="text-xs text-[var(--lh-muted)]">
                       {format(new Date(a.createdAt), 'MMM d · h:mm a')}
                     </p>
                   </div>
@@ -568,20 +526,20 @@ function UserDashboardInner() {
           </ul>
         </section>
 
-        <section className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm dark:border-gray-700/80">
+        <section className="border border-[var(--lh-line)] bg-[var(--lh-bg)] p-5 md:p-6">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+            <h2 className="landing-display text-lg font-semibold text-[var(--lh-ink)]">
               Collaborations
             </h2>
             <Link
               href="/collaborations"
-              className="text-xs font-medium text-[var(--color-brand)] hover:underline"
+              className="text-xs font-medium text-[var(--lh-accent)] hover:underline"
             >
               Open hub
             </Link>
           </div>
           {d.collaborations.length === 0 ? (
-            <p className="py-4 text-sm text-[var(--color-text-muted)]">
+            <p className="py-4 text-sm text-[var(--lh-muted)]">
               No accepted collaborations yet. Send requests from idea pages or
               explore the community.
             </p>
@@ -591,11 +549,11 @@ function UserDashboardInner() {
                 <li key={c.idea._id}>
                   <Link
                     href={`/ideas/${c.idea._id}`}
-                    className="font-medium text-[var(--color-text-primary)] hover:text-[var(--color-brand)] hover:underline"
+                    className="font-medium text-[var(--lh-ink)] hover:text-[var(--lh-accent)] hover:underline"
                   >
                     {c.idea.title}
                   </Link>
-                  <span className="text-xs text-[var(--color-text-muted)]">
+                  <span className="text-xs text-[var(--lh-muted)]">
                     {' '}
                     · {c.role}
                   </span>
@@ -604,17 +562,17 @@ function UserDashboardInner() {
             </ul>
           )}
           {d.pendingCollabRequests.length > 0 ? (
-            <div className="mt-4 border-t border-[var(--color-border)] pt-4 dark:border-gray-700/80">
-              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">
+            <div className="mt-4 border-t border-[var(--lh-line)] pt-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--lh-muted)]">
                 Pending outgoing
               </p>
               <ul className="mt-2 space-y-1.5 text-sm">
                 {d.pendingCollabRequests.slice(0, 5).map((p) => (
                   <li key={p.idea._id + p.createdAt}>
-                    <span className="text-[var(--color-text-primary)]">
+                    <span className="text-[var(--lh-ink)]">
                       {p.idea.title}
                     </span>{' '}
-                    <span className="text-amber-600 dark:text-amber-400">
+                    <span className="text-[var(--lh-muted)]">
                       ({p.status})
                     </span>
                   </li>
@@ -641,13 +599,13 @@ function Shortcut({
     <li>
       <Link
         href={href}
-        className="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-border-light)] dark:hover:bg-white/5"
+        className="flex items-center gap-3 px-1 py-2.5 text-sm text-[var(--lh-ink)] transition-colors hover:text-[var(--lh-accent)]"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-brand-light)]/50 text-[var(--color-brand)] dark:bg-indigo-500/15 dark:text-indigo-300">
+        <span className="flex h-8 w-8 items-center justify-center text-[var(--lh-muted)]">
           <Icon className="h-4 w-4" />
         </span>
         <span className="font-medium">{label}</span>
-        <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 opacity-40" />
+        <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 opacity-30" />
       </Link>
     </li>
   );
@@ -655,28 +613,28 @@ function Shortcut({
 
 function ActivityIcon({ type }: { type: string }) {
   const wrap =
-    'flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface-elevated)]';
+    'flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--lh-line)] bg-[var(--lh-surface)] text-[var(--lh-accent)]';
   if (type === 'like')
     return (
       <div className={wrap}>
-        <Heart className="h-4 w-4 text-red-500" />
+        <Heart className="h-3.5 w-3.5" />
       </div>
     );
   if (type === 'comment')
     return (
       <div className={wrap}>
-        <MessageCircle className="h-4 w-4 text-cyan-500" />
+        <MessageCircle className="h-3.5 w-3.5" />
       </div>
     );
   if (type === 'collab')
     return (
       <div className={wrap}>
-        <Handshake className="h-4 w-4 text-amber-500" />
+        <Handshake className="h-3.5 w-3.5" />
       </div>
     );
   return (
     <div className={wrap}>
-      <Users className="h-4 w-4 text-emerald-500" />
+      <Users className="h-3.5 w-3.5" />
     </div>
   );
 }
@@ -685,29 +643,21 @@ function MiniStat({
   icon: Icon,
   label,
   value,
-  accent,
-  bg,
 }: {
   icon: typeof Lightbulb;
   label: string;
   value: number;
-  accent: string;
-  bg: string;
 }) {
   return (
-    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm dark:border-gray-700/80 sm:p-4">
+    <div className="border-t border-[var(--lh-line)] pt-4">
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="text-xl font-bold tabular-nums text-[var(--color-text-primary)] sm:text-2xl">
+          <p className="landing-display text-2xl font-semibold tabular-nums tracking-tight text-[var(--lh-ink)] sm:text-3xl">
             {value.toLocaleString()}
           </p>
-          <p className="truncate text-[11px] text-[var(--color-text-muted)] sm:text-xs">
-            {label}
-          </p>
+          <p className="mt-1 truncate text-xs text-[var(--lh-muted)]">{label}</p>
         </div>
-        <div className={cn('rounded-full p-2', bg)}>
-          <Icon className={cn('h-4 w-4 sm:h-5 sm:w-5', accent)} />
-        </div>
+        <Icon className="mt-1 h-4 w-4 shrink-0 text-[var(--lh-muted)] opacity-60" />
       </div>
     </div>
   );
@@ -727,23 +677,20 @@ function StatusPill({
   danger?: boolean;
 }) {
   return (
-    <div
-      className={cn(
-        'rounded-lg border px-3 py-2.5 text-center text-xs font-medium',
-        ok &&
-          'border-green-200 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-950/50 dark:text-green-300',
-        warn &&
-          'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-200',
-        danger &&
-          'border-red-200 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950/50 dark:text-red-300',
-        !ok &&
-          !warn &&
-          !danger &&
-          'border-[var(--color-border)] bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)]'
-      )}
-    >
-      <div className="text-[10px] opacity-80">{label}</div>
-      <div className="text-lg font-bold tabular-nums">{value}</div>
+    <div className="border border-[var(--lh-line)] bg-[var(--lh-surface)] px-3 py-3 text-center">
+      <div
+        className={cn(
+          'text-[10px] font-medium uppercase tracking-wide text-[var(--lh-muted)]',
+          ok && 'text-[var(--lh-accent)]',
+          warn && 'text-amber-700 dark:text-amber-400',
+          danger && 'text-red-600 dark:text-red-400'
+        )}
+      >
+        {label}
+      </div>
+      <div className="mt-1 landing-display text-xl font-semibold tabular-nums text-[var(--lh-ink)]">
+        {value}
+      </div>
     </div>
   );
 }

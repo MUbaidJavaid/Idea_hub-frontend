@@ -16,14 +16,16 @@ export function StatsCard({
   return (
     <div
       className={cn(
-        'rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4',
+        'border-t border-[var(--lh-line)] bg-[var(--lh-bg)] pt-4',
         className
       )}
     >
-      <p className="text-sm text-[var(--text-muted)]">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-[var(--text)]">{value}</p>
+      <p className="landing-eyebrow">{label}</p>
+      <p className="landing-display mt-2 text-3xl font-semibold tracking-tight text-[var(--lh-ink)]">
+        {value}
+      </p>
       {sub ? (
-        <p className="mt-1 text-xs text-[var(--text-muted)]">{sub}</p>
+        <p className="mt-1 text-xs text-[var(--lh-muted)]">{sub}</p>
       ) : null}
     </div>
   );
