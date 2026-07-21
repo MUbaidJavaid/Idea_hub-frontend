@@ -58,15 +58,31 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'ideahub-auth',
       storage: createJSONStorage(() => localStorage),
-      onRehydrateStorage: () => () => {
+      onRehydrateStorage: () => (_state, _error) => {
+        // Always mark hydrated (success or fail) so AuthGuard / axios never hang.
         useAuthStore.setState({ hasHydrated: true, _hasHydrated: true });
       },
       partialize: (s) => ({
         accessToken: s.accessToken,
         refreshToken: s.refreshToken,
         user: s.user,
-        isAuthenticated: s.isAuthenticated,
+        isAuthenticated: Boolean(s.accessToken && s.refreshToken),
       }),
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<AuthState>;
+        const accessToken = p.accessToken ?? null;
+        const refreshToken = p.refreshToken ?? null;
+        return {
+          ...current,
+          ...p,
+          accessToken,
+          refreshToken,
+          user: p.user ?? null,
+          isAuthenticated: Boolean(accessToken && refreshToken),
+          hasHydrated: current.hasHydrated,
+          _hasHydrated: current._hasHydrated,
+        };
+      },
     }
   )
 );

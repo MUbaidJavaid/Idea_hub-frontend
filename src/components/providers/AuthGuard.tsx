@@ -14,9 +14,13 @@ export function AuthGuard({
   roles?: Array<'user' | 'collaborator' | 'moderator' | 'super_admin'>;
 }) {
   const router = useRouter();
-  const { isAuthenticated, user } = useAuthStore();
+  const hasHydrated = useAuthStore((s) => s.hasHydrated);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const user = useAuthStore((s) => s.user);
 
   useEffect(() => {
+    // Wait for localStorage rehydrate — otherwise reload looks like a logout.
+    if (!hasHydrated) return;
     if (!isAuthenticated) {
       router.replace('/login');
       return;
@@ -24,9 +28,9 @@ export function AuthGuard({
     if (roles?.length && user && !roles.includes(user.role)) {
       router.replace('/feed');
     }
-  }, [isAuthenticated, roles, router, user]);
+  }, [hasHydrated, isAuthenticated, roles, router, user]);
 
-  if (!isAuthenticated || !user) {
+  if (!hasHydrated || !isAuthenticated || !user) {
     return (
       <div className="flex min-h-[40vh] items-center justify-center">
         <Spinner size="lg" />

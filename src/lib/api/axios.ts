@@ -29,8 +29,37 @@ function setAuthorizationHeader(
   config.headers = headers;
 }
 
+function waitForAuthHydration(timeoutMs = 5_000): Promise<void> {
+  if (typeof window === 'undefined') return Promise.resolve();
+  if (useAuthStore.getState().hasHydrated) return Promise.resolve();
+  return new Promise((resolve) => {
+    const start = Date.now();
+    const unsub = useAuthStore.subscribe((s) => {
+      if (s.hasHydrated || Date.now() - start > timeoutMs) {
+        unsub();
+        resolve();
+      }
+    });
+    window.setTimeout(() => {
+      try {
+        unsub();
+      } catch {
+        /* noop */
+      }
+      // Ensure flag is set so callers don't hang forever if persist never fires.
+      if (!useAuthStore.getState().hasHydrated) {
+        useAuthStore.getState().setHasHydrated(true);
+      }
+      resolve();
+    }, timeoutMs);
+  });
+}
+
 api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  async (config: InternalAxiosRequestConfig) => {
+    if (typeof window !== 'undefined') {
+      await waitForAuthHydration();
+    }
     const path = config.url ?? '';
     const isPublicAuth =
       path.includes('/auth/login') ||
@@ -60,28 +89,6 @@ let failedQueue: Array<{
   resolve: (v: string) => void;
   reject: (e: unknown) => void;
 }> = [];
-
-function waitForAuthHydration(timeoutMs = 1500): Promise<void> {
-  if (useAuthStore.getState().hasHydrated) return Promise.resolve();
-  return new Promise((resolve) => {
-    const start = Date.now();
-    const unsub = useAuthStore.subscribe((s) => {
-      if (s.hasHydrated || Date.now() - start > timeoutMs) {
-        unsub();
-        resolve();
-      }
-    });
-    // Safety timeout even if subscribe never fires
-    window.setTimeout(() => {
-      try {
-        unsub();
-      } catch {
-        /* noop */
-      }
-      resolve();
-    }, timeoutMs);
-  });
-}
 
 function processQueue(error: unknown, token?: string) {
   failedQueue.forEach((p) => {
@@ -123,9 +130,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        if (typeof window !== 'undefined') {
-          await waitForAuthHydration();
-        }
+        await waitForAuthHydration();
         const refreshToken = useAuthStore.getState().refreshToken;
         if (!refreshToken) {
           throw new Error('No refresh token');
@@ -148,11 +153,19 @@ api.interceptors.response.use(
         return api(original);
       } catch (refreshError) {
         processQueue(refreshError);
-        // Avoid false logouts during startup before persisted auth rehydrates.
-        if (useAuthStore.getState().hasHydrated) {
+        const networkOnly =
+          isAxiosError(refreshError) && !refreshError.response;
+        // Keep session on transient network errors; clear only on real auth failure.
+        if (
+          !networkOnly &&
+          useAuthStore.getState().hasHydrated
+        ) {
           useAuthStore.getState().logout();
           if (typeof window !== 'undefined') {
-            window.location.href = '/login';
+            const path = window.location.pathname;
+            if (!path.startsWith('/login') && !path.startsWith('/register')) {
+              window.location.assign('/login');
+            }
           }
         }
         return Promise.reject(refreshError);
