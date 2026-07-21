@@ -39,8 +39,8 @@ const items: Array<{
   { href: '/admin/settings', label: 'Settings', icon: Settings, match: 'prefix' },
 ];
 
-const TOP_OFFSET = 'top-14';
-const SIDEBAR_W = 'w-72';
+const TOP_OFFSET = 'top-[calc(3.5rem+env(safe-area-inset-top))]';
+const SIDEBAR_W = 'w-[min(18rem,100vw)] md:w-72';
 
 export function AdminSidebar() {
   const pathname = usePathname();
@@ -68,7 +68,7 @@ export function AdminSidebar() {
           'fixed left-0 z-40 flex max-w-[100vw] flex-col overflow-hidden border-r border-[var(--lh-line)] bg-[var(--lh-bg)] transition-transform duration-200 ease-out',
           SIDEBAR_W,
           TOP_OFFSET,
-          'h-[calc(100dvh-3.5rem)]',
+          'h-[calc(100dvh-3.5rem-env(safe-area-inset-top))]',
           adminOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         )}
       >

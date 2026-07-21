@@ -50,6 +50,8 @@ export interface IUserSubscription {
   plan: SubscriptionPlan;
   status: SubscriptionStatus;
   currentPeriodEnd: string | null;
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
 }
 
 export interface IUser {

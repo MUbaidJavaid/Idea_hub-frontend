@@ -133,7 +133,7 @@ export function Navbar() {
     <>
       {/* Mobile top — Messages + Notifications (Instagram-style) */}
       {isAuthenticated ? (
-        <div className="fixed left-0 right-0 top-0 z-40 flex h-12 items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)]/95 pb-0 pl-3 pr-2 pt-[max(0px,env(safe-area-inset-top))] backdrop-blur-md md:hidden dark:border-gray-700">
+        <div className="fixed left-0 right-0 top-0 z-40 flex min-h-12 items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-surface)]/95 pb-0 pl-3 pr-2 pt-[max(0px,env(safe-area-inset-top))] backdrop-blur-md md:hidden dark:border-gray-700">
           <IdeahubLogo showWordmark={false} />
           <div className="flex shrink-0 items-center gap-0.5">
             <MessagesNavLink variant="mobile-top" />
@@ -148,7 +148,7 @@ export function Navbar() {
 
       {/* Mobile bottom */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-40 flex h-14 items-stretch justify-around border-t border-[var(--color-border)] bg-[var(--color-surface)] px-1 pb-[env(safe-area-inset-bottom)] pt-1 md:hidden dark:border-gray-700"
+        className="fixed bottom-0 left-0 right-0 z-40 flex min-h-14 items-stretch justify-around border-t border-[var(--color-border)] bg-[var(--color-surface)] px-1 pb-[max(0.25rem,env(safe-area-inset-bottom))] pt-1 md:hidden dark:border-gray-700"
         aria-label="Primary"
       >
         <Link

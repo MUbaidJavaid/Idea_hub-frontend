@@ -45,4 +45,25 @@ export const subscriptionsApi = {
       throw new Error(getApiError(e));
     }
   },
+
+  /** After Checkout: sync Stripe → Mongo (webhook fallback). */
+  sync: async () => {
+    try {
+      const res = await api.post<
+        ApiResponse<{
+          synced: boolean;
+          reason?: string;
+          plan: string;
+          status: string;
+          subscription: unknown;
+        }>
+      >('/subscriptions/sync');
+      if (!res.data.success || res.data.data == null) {
+        throw new Error(res.data.message || 'Sync failed');
+      }
+      return res.data.data;
+    } catch (e) {
+      throw new Error(getApiError(e));
+    }
+  },
 };

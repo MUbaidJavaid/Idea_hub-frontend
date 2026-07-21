@@ -500,39 +500,41 @@ export function MainShell({ children }: { children: React.ReactNode }) {
         </aside>
 
         {/* Left — icon only tablet */}
-        <aside className="fixed left-0 top-0 z-30 hidden w-[60px] flex-col items-center border-r border-[var(--lh-line)] bg-[var(--lh-bg)] py-3 md:top-[60px] md:flex md:h-[calc(100dvh-60px)] xl:hidden">
-          <Link href="/feed" className="mb-4" title="Home" aria-label="Idea Hub home">
+        <aside className="fixed left-0 top-0 z-30 hidden w-[60px] flex-col items-center overflow-y-auto overflow-x-hidden border-r border-[var(--lh-line)] bg-[var(--lh-bg)] py-3 md:top-[60px] md:flex md:h-[calc(100dvh-60px)] xl:hidden">
+          <Link href="/feed" className="mb-4 shrink-0" title="Home" aria-label="Idea Hub home">
             <IdeaHubMark size={28} />
           </Link>
-          {nav.map((item) => {
-            const Icon = item.icon;
-            const href =
-              item.href === '/profile' ? profileHref : item.href;
-            const active =
-              item.href === '/profile'
-                ? pathname.startsWith('/profile')
-                : pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={href}
-                title={item.label}
-                className={cn(
-                  'mb-1 rounded-full p-2.5',
-                  active
-                    ? 'bg-[var(--lh-accent-soft)] text-[var(--lh-accent)]'
-                    : 'text-[var(--lh-muted)] hover:bg-[var(--lh-surface)]'
-                )}
-              >
-                <Icon size={20} />
-              </Link>
-            );
-          })}
+          <div className="flex min-h-0 w-full flex-1 flex-col items-center overflow-y-auto">
+            {nav.map((item) => {
+              const Icon = item.icon;
+              const href =
+                item.href === '/profile' ? profileHref : item.href;
+              const active =
+                item.href === '/profile'
+                  ? pathname.startsWith('/profile')
+                  : pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={href}
+                  title={item.label}
+                  className={cn(
+                    'mb-1 shrink-0 rounded-full p-2.5',
+                    active
+                      ? 'bg-[var(--lh-accent-soft)] text-[var(--lh-accent)]'
+                      : 'text-[var(--lh-muted)] hover:bg-[var(--lh-surface)]'
+                  )}
+                >
+                  <Icon size={20} />
+                </Link>
+              );
+            })}
+          </div>
           <button
             type="button"
             title="Create"
             onClick={() => openCreate('none')}
-            className="mt-auto rounded-full bg-[var(--lh-ink)] p-2.5 text-[var(--lh-bg)]"
+            className="mt-2 shrink-0 rounded-full bg-[var(--lh-ink)] p-2.5 text-[var(--lh-bg)]"
           >
             <ICONS.post size={18} />
           </button>
@@ -541,7 +543,9 @@ export function MainShell({ children }: { children: React.ReactNode }) {
         <div
           className={cn(
             'flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pb-[max(0.75rem,calc(3.5rem+env(safe-area-inset-bottom)))] md:pb-6 md:pl-[60px] md:pt-[60px] xl:pl-[280px] xl:pt-16',
-            user ? 'pt-12 md:pt-[60px]' : 'pt-0 md:pt-[60px]'
+            user
+              ? 'pt-[calc(3rem+env(safe-area-inset-top))] md:pt-[60px]'
+              : 'pt-0 md:pt-[60px]'
           )}
         >
           <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 gap-6 overflow-hidden px-0 py-3 sm:px-4 sm:py-4">

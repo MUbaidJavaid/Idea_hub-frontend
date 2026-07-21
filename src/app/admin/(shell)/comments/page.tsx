@@ -61,11 +61,11 @@ export default function AdminCommentsPage() {
 
       <div
         className={cn(
-          'overflow-hidden rounded-xl border',
+          'min-w-0 max-w-full overflow-x-auto rounded-xl border [-webkit-overflow-scrolling:touch]',
           isLight ? 'border-slate-200 bg-white' : 'border-cyan-500/20 bg-[#0d1520]'
         )}
       >
-        <table className="w-full text-left text-sm">
+        <table className="w-full min-w-[640px] text-left text-sm">
           <thead
             className={cn(
               'border-b text-xs uppercase tracking-wide',

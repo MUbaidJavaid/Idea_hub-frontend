@@ -75,19 +75,46 @@ function PricingContent() {
   useEffect(() => {
     const c = searchParams.get('checkout');
     if (c === 'success') {
-      toast.success(
-        'Thanks! If you subscribed, your plan updates in a moment.'
-      );
+      toast.success('Payment received — confirming your plan…');
       const token = useAuthStore.getState().accessToken;
-      if (token) {
-        void usersApi
-          .getMe()
-          .then((u) => updateUser(u))
-          .catch(() => {
+      if (!token) return;
+
+      let cancelled = false;
+      void (async () => {
+        // Retry: Stripe can lag a few seconds after redirect
+        for (let attempt = 0; attempt < 5; attempt++) {
+          if (cancelled) return;
+          try {
+            await subscriptionsApi.sync();
+          } catch {
+            /* keep trying getMe */
+          }
+          try {
+            const u = await usersApi.getMe();
+            if (cancelled) return;
+            updateUser(u);
+            const plan = getEffectivePlan(u);
+            if (plan !== 'free') {
+              toast.success(`You're on ${plan}`);
+              return;
+            }
+          } catch {
             /* ignore */
-          });
-      }
-    } else if (c === 'cancel') {
+          }
+          await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+        }
+        if (!cancelled) {
+          toast.error(
+            'Payment ok, but plan not updated yet. Refresh in a minute or open Pricing again.'
+          );
+        }
+      })();
+
+      return () => {
+        cancelled = true;
+      };
+    }
+    if (c === 'cancel') {
       toast('Checkout cancelled');
     }
   }, [searchParams, updateUser]);
@@ -136,6 +163,28 @@ function PricingContent() {
       window.location.href = url;
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Could not open portal');
+    } finally {
+      setLoading(null);
+    }
+  }
+
+  async function refreshPlan() {
+    if (!user) return;
+    setLoading('portal');
+    try {
+      const sync = await subscriptionsApi.sync();
+      const u = await usersApi.getMe();
+      updateUser(u);
+      const plan = getEffectivePlan(u);
+      if (plan !== 'free') {
+        toast.success(`Plan updated: ${plan}`);
+      } else if (sync.synced) {
+        toast.success('Synced — refresh if plan still looks free');
+      } else {
+        toast.error(sync.reason || 'No paid subscription found on Stripe yet');
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Could not refresh plan');
     } finally {
       setLoading(null);
     }
@@ -244,6 +293,15 @@ function PricingContent() {
               onClick={() => void portal()}
             >
               Manage billing
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={!stripeOk || loading !== null}
+              onClick={() => void refreshPlan()}
+            >
+              Refresh plan
             </Button>
             <span className="text-xs text-[var(--text-muted)]">
               Current plan:{' '}
