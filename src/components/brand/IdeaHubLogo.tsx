@@ -8,9 +8,15 @@ type IdeaHubLogoProps = {
 };
 
 /**
- * Idea Hub mark — “Orbit”
- * An open orbital path around a teal hub: ideas drawn into the center,
- * yet left open — precision geometry that holds at 16px and 128px.
+ * Idea Hub mark — “Folio”
+ *
+ * Research notes (why this, not Orbit / IH bars):
+ * - Early SaaS should use a combination mark; the symbol must mean something
+ *   on day one (not abstract orbits that need prior recognition).
+ * - Category clichés to avoid: lightbulbs, node networks, orbital dots,
+ *   generic initial bars — all read as “AI logo generator” output.
+ * - Product truth: Idea Hub is a place where idea posts stack, get validated,
+ *   and move forward. Two offset cards = a hub of ideas — readable at 16px.
  */
 export function IdeaHubMark({
   className,
@@ -21,11 +27,10 @@ export function IdeaHubMark({
   size?: number;
   inverted?: boolean;
 }) {
-  const bg = inverted ? '#F4F4F2' : '#0A0A0A';
-  const orbit = inverted ? '#0A0A0A' : '#EDEDEB';
-  const hub = '#0F766E';
-  const core = inverted ? '#0A0A0A' : '#FAFAF9';
-  const node = inverted ? '#0A0A0A' : '#FAFAF9';
+  const bg = inverted ? '#F5F5F3' : '#0A0A0A';
+  const back = '#0F766E';
+  const front = inverted ? '#0A0A0A' : '#FAFAF9';
+  const line = inverted ? '#F5F5F3' : '#0A0A0A';
 
   return (
     <svg
@@ -37,22 +42,17 @@ export function IdeaHubMark({
       className={className}
       aria-hidden
     >
-      <rect width="48" height="48" rx="14" fill={bg} />
+      <rect width="48" height="48" rx="10" fill={bg} />
 
-      {/* Open orbit — invitation, not a closed loop */}
-      <path
-        d="M24 9.75C31.87 9.75 38.25 16.13 38.25 24C38.25 31.87 31.87 38.25 24 38.25C18.55 38.25 13.82 35.2 11.4 30.6"
-        stroke={orbit}
-        strokeWidth="2.1"
-        strokeLinecap="round"
-      />
+      {/* Back card — hub / depth */}
+      <rect x="16" y="10" width="20" height="26" rx="3.5" fill={back} />
 
-      {/* Satellite — the incoming idea */}
-      <circle cx="24" cy="9.75" r="2.65" fill={node} />
+      {/* Front card — the active idea */}
+      <rect x="12" y="14" width="20" height="26" rx="3.5" fill={front} />
 
-      {/* Hub core */}
-      <circle cx="24" cy="24" r="7.25" fill={hub} />
-      <circle cx="24" cy="24" r="2.35" fill={core} />
+      {/* Title rule — suggests a written idea, not a decoration */}
+      <rect x="16" y="20" width="12" height="2.25" rx="1.1" fill={line} opacity={0.9} />
+      <rect x="16" y="25" width="8" height="2.25" rx="1.1" fill={line} opacity={0.35} />
     </svg>
   );
 }

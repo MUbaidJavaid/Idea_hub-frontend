@@ -171,7 +171,11 @@
   }
 
   .input {
-    @apply w-full rounded-pill border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm text-[var(--color-text-primary)] transition-colors duration-150 placeholder:text-[var(--color-text-muted)] focus:border-[var(--lh-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--lh-ink)]/10;
+    @apply w-full rounded-pill border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm text-[var(--color-text-primary)] transition-colors duration-150 placeholder:text-[var(--color-text-muted)] focus:outline-none;
+  }
+  .input:focus {
+    border-color: var(--lh-ink);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--lh-ink) 10%, transparent);
   }
 
   .avatar {

@@ -1,4 +1,5 @@
-/** Local Lottie assets — keywords used when sourcing from LottieFiles. */
+/** Local Lottie assets — recolored to landing theme (ink / stone / teal #0F766E).
+ *  Re-run `node scripts/recolor-lottie-theme.js` after replacing any JSON. */
 export const LANDING_LOTTIE = {
   /** keywords: ideas, lightbulb, innovation, creative thinking */
   hero: '/lottie/hero-ideas.json',

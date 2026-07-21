@@ -3,7 +3,7 @@ import { ImageResponse } from 'next/og';
 export const size = { width: 180, height: 180 };
 export const contentType = 'image/png';
 
-/** Apple touch icon — Idea Hub “Orbit” mark. */
+/** Apple touch icon — Idea Hub “Folio” mark. */
 export default function AppleIcon() {
   return new ImageResponse(
     (
@@ -15,52 +15,53 @@ export default function AppleIcon() {
           alignItems: 'center',
           justifyContent: 'center',
           background: '#0A0A0A',
-          borderRadius: 42,
+          borderRadius: 36,
           position: 'relative',
         }}
       >
-        {/* Orbit ring */}
+        {/* Back card */}
         <div
           style={{
             position: 'absolute',
-            width: 108,
-            height: 108,
-            borderRadius: 999,
-            border: '7px solid #EDEDEB',
-            borderBottomColor: 'transparent',
-            borderLeftColor: 'transparent',
-            transform: 'rotate(-35deg)',
-          }}
-        />
-        {/* Satellite node */}
-        <div
-          style={{
-            position: 'absolute',
-            width: 18,
-            height: 18,
-            borderRadius: 999,
-            background: '#FAFAF9',
-            top: 28,
-          }}
-        />
-        {/* Hub */}
-        <div
-          style={{
-            width: 54,
-            height: 54,
-            borderRadius: 999,
+            width: 72,
+            height: 94,
+            borderRadius: 14,
             background: '#0F766E',
+            top: 32,
+            left: 62,
+          }}
+        />
+        {/* Front card */}
+        <div
+          style={{
+            position: 'absolute',
+            width: 72,
+            height: 94,
+            borderRadius: 14,
+            background: '#FAFAF9',
+            top: 48,
+            left: 46,
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            flexDirection: 'column',
+            paddingTop: 22,
+            paddingLeft: 16,
+            gap: 10,
           }}
         >
           <div
             style={{
-              width: 16,
-              height: 16,
-              borderRadius: 999,
-              background: '#FAFAF9',
+              width: 40,
+              height: 8,
+              borderRadius: 4,
+              background: '#0A0A0A',
+            }}
+          />
+          <div
+            style={{
+              width: 28,
+              height: 8,
+              borderRadius: 4,
+              background: 'rgba(10,10,10,0.35)',
             }}
           />
         </div>

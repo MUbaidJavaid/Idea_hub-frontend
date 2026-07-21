@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-/** Shared OG / Twitter card — Idea Hub Orbit branding. */
+/** Shared OG / Twitter card — Idea Hub Folio branding. */
 export function BrandOgLayout({
   title = 'Where serious ideas become accountable products.',
   subtitle = 'Share. Validate. Match. Launch — the operating system for founders, researchers, and operators.',
@@ -27,17 +27,16 @@ export function BrandOgLayout({
           position: 'absolute',
           inset: 0,
           background:
-            'radial-gradient(ellipse 80% 60% at 85% 20%, rgba(15,118,110,0.12), transparent 55%), radial-gradient(ellipse 50% 40% at 10% 90%, rgba(10,10,10,0.04), transparent 50%)',
+            'radial-gradient(ellipse 80% 60% at 85% 20%, rgba(15,118,110,0.1), transparent 55%)',
         }}
       />
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 18, position: 'relative' }}>
-        {/* Orbit mark */}
         <div
           style={{
             width: 64,
             height: 64,
-            borderRadius: 18,
+            borderRadius: 14,
             background: '#0A0A0A',
             display: 'flex',
             alignItems: 'center',
@@ -48,42 +47,44 @@ export function BrandOgLayout({
           <div
             style={{
               position: 'absolute',
-              width: 38,
-              height: 38,
-              borderRadius: 999,
-              border: '2.5px solid #EDEDEB',
-              borderBottomColor: 'transparent',
-              borderLeftColor: 'transparent',
-              transform: 'rotate(-35deg)',
+              width: 26,
+              height: 34,
+              borderRadius: 5,
+              background: '#0F766E',
+              top: 12,
+              left: 22,
             }}
           />
           <div
             style={{
               position: 'absolute',
-              width: 7,
-              height: 7,
-              borderRadius: 999,
+              width: 26,
+              height: 34,
+              borderRadius: 5,
               background: '#FAFAF9',
-              top: 10,
-            }}
-          />
-          <div
-            style={{
-              width: 20,
-              height: 20,
-              borderRadius: 999,
-              background: '#0F766E',
+              top: 18,
+              left: 16,
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              flexDirection: 'column',
+              paddingTop: 8,
+              paddingLeft: 5,
+              gap: 4,
             }}
           >
             <div
               style={{
-                width: 6,
-                height: 6,
-                borderRadius: 999,
-                background: '#FAFAF9',
+                width: 14,
+                height: 3,
+                borderRadius: 2,
+                background: '#0A0A0A',
+              }}
+            />
+            <div
+              style={{
+                width: 10,
+                height: 3,
+                borderRadius: 2,
+                background: 'rgba(10,10,10,0.35)',
               }}
             />
           </div>

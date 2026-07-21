@@ -36,12 +36,12 @@ export const metadata: Metadata = {
   applicationName: 'Idea Hub',
   icons: {
     icon: [
-      { url: '/favicon.ico?v=orbit4', sizes: 'any' },
-      { url: '/favicon.svg?v=orbit4', type: 'image/svg+xml' },
-      { url: '/favicon-32.png?v=orbit4', type: 'image/png', sizes: '32x32' },
-      { url: '/icon.svg?v=orbit4', type: 'image/svg+xml' },
+      { url: '/favicon.ico?v=folio1', sizes: 'any' },
+      { url: '/favicon.svg?v=folio1', type: 'image/svg+xml' },
+      { url: '/favicon-32.png?v=folio1', type: 'image/png', sizes: '32x32' },
+      { url: '/icon.svg?v=folio1', type: 'image/svg+xml' },
     ],
-    shortcut: '/favicon.ico?v=orbit4',
+    shortcut: '/favicon.ico?v=folio1',
     apple: [{ url: '/apple-icon', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
