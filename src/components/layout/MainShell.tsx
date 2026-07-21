@@ -542,13 +542,13 @@ export function MainShell({ children }: { children: React.ReactNode }) {
 
         <div
           className={cn(
-            'flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pb-[max(0.75rem,calc(3.5rem+env(safe-area-inset-bottom)))] md:pb-6 md:pl-[60px] md:pt-[60px] xl:pl-[280px] xl:pt-16',
+            'flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden md:pb-6 md:pl-[60px] md:pt-[60px] xl:pl-[280px] xl:pt-16',
             user
-              ? 'pt-[calc(3rem+env(safe-area-inset-top))] md:pt-[60px]'
-              : 'pt-0 md:pt-[60px]'
+              ? 'pt-[calc(3.5rem+env(safe-area-inset-top))] pb-[calc(5.25rem+env(safe-area-inset-bottom))] md:pt-[60px] md:pb-6'
+              : 'pt-0 pb-[calc(5.25rem+env(safe-area-inset-bottom))] md:pt-[60px] md:pb-6'
           )}
         >
-          <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 gap-6 overflow-hidden px-0 py-3 sm:px-4 sm:py-4">
+          <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 gap-6 overflow-hidden px-3 py-3 sm:px-4 sm:py-4 md:px-5">
             <div
               className="feed-scroll-area min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain"
             >
