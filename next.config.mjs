@@ -11,7 +11,7 @@ const nextConfig = {
   compress: true,
   /** Resolves lucide barrel imports to per-icon modules — fewer Turbopack/HMR chunk mismatches. */
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: ['lucide-react', 'framer-motion', 'lottie-react'],
   },
   async rewrites() {
     return [{ source: '/favicon.ico', destination: '/icon.svg' }];

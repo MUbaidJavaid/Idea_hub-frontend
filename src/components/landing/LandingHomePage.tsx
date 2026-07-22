@@ -1,23 +1,99 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { useAuthStore } from '@/store/authStore';
 
-import { LandingAiCapabilities } from './sections/LandingAiCapabilities';
-import { LandingFaq } from './sections/LandingFaq';
-import { LandingFeatures } from './sections/LandingFeatures';
-import { LandingFinalCta } from './sections/LandingFinalCta';
 import { LandingHero } from './sections/LandingHero';
-import { LandingPricing } from './sections/LandingPricing';
-import { LandingProblem } from './sections/LandingProblem';
-import { LandingProductPreview } from './sections/LandingProductPreview';
-import { LandingSolution } from './sections/LandingSolution';
-import { LandingStats } from './sections/LandingStats';
-import { LandingTestimonials } from './sections/LandingTestimonials';
-import { LandingTrustedBy } from './sections/LandingTrustedBy';
-import { LandingWorkflow } from './sections/LandingWorkflow';
+
+const sectionFallback = () => (
+  <div className="landing-section min-h-[12rem]" aria-hidden />
+);
+
+const LandingTrustedBy = dynamic(
+  () =>
+    import('./sections/LandingTrustedBy').then((m) => ({
+      default: m.LandingTrustedBy,
+    })),
+  { loading: sectionFallback }
+);
+const LandingProblem = dynamic(
+  () =>
+    import('./sections/LandingProblem').then((m) => ({
+      default: m.LandingProblem,
+    })),
+  { loading: sectionFallback }
+);
+const LandingSolution = dynamic(
+  () =>
+    import('./sections/LandingSolution').then((m) => ({
+      default: m.LandingSolution,
+    })),
+  { loading: sectionFallback }
+);
+const LandingWorkflow = dynamic(
+  () =>
+    import('./sections/LandingWorkflow').then((m) => ({
+      default: m.LandingWorkflow,
+    })),
+  { loading: sectionFallback }
+);
+const LandingFeatures = dynamic(
+  () =>
+    import('./sections/LandingFeatures').then((m) => ({
+      default: m.LandingFeatures,
+    })),
+  { loading: sectionFallback }
+);
+const LandingAiCapabilities = dynamic(
+  () =>
+    import('./sections/LandingAiCapabilities').then((m) => ({
+      default: m.LandingAiCapabilities,
+    })),
+  { loading: sectionFallback }
+);
+const LandingProductPreview = dynamic(
+  () =>
+    import('./sections/LandingProductPreview').then((m) => ({
+      default: m.LandingProductPreview,
+    })),
+  { loading: sectionFallback }
+);
+const LandingStats = dynamic(
+  () =>
+    import('./sections/LandingStats').then((m) => ({
+      default: m.LandingStats,
+    })),
+  { loading: sectionFallback }
+);
+const LandingTestimonials = dynamic(
+  () =>
+    import('./sections/LandingTestimonials').then((m) => ({
+      default: m.LandingTestimonials,
+    })),
+  { loading: sectionFallback }
+);
+const LandingPricing = dynamic(
+  () =>
+    import('./sections/LandingPricing').then((m) => ({
+      default: m.LandingPricing,
+    })),
+  { loading: sectionFallback }
+);
+const LandingFaq = dynamic(
+  () =>
+    import('./sections/LandingFaq').then((m) => ({ default: m.LandingFaq })),
+  { loading: sectionFallback }
+);
+const LandingFinalCta = dynamic(
+  () =>
+    import('./sections/LandingFinalCta').then((m) => ({
+      default: m.LandingFinalCta,
+    })),
+  { loading: sectionFallback }
+);
 
 export function LandingHomePage() {
   const router = useRouter();

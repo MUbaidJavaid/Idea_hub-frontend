@@ -288,6 +288,28 @@
   color: var(--lh-muted);
 }
 
+@keyframes landing-scroll-pulse {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    transform-origin: top;
+  }
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+.landing-scroll-line {
+  animation: landing-scroll-pulse 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-scroll-line {
+    animation: none;
+  }
+}
+
 @keyframes landing-marquee {
   from {
     transform: translateX(0);

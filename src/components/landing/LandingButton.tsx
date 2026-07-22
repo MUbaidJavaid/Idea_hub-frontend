@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 type Variant = 'primary' | 'secondary' | 'ghost';
@@ -30,30 +29,22 @@ export function LandingButton({
   className = '',
   external,
 }: LandingButtonProps) {
-  const reduce = useReducedMotion();
   const base =
-    'landing-btn inline-flex min-h-[48px] items-center justify-center rounded-full px-7 text-sm font-medium tracking-tight transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--lh-bg)]';
+    'landing-btn inline-flex min-h-[48px] items-center justify-center rounded-full px-7 text-sm font-medium tracking-tight transition-[transform,colors] duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--lh-bg)] hover:-translate-y-px active:scale-[0.985]';
 
   const classNames = `${base} ${styles[variant]} ${className}`;
 
-  const inner = external ? (
-    <a href={href} className={classNames} target="_blank" rel="noopener noreferrer">
-      {children}
-    </a>
-  ) : (
+  if (external) {
+    return (
+      <a href={href} className={classNames} target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
+    );
+  }
+
+  return (
     <Link href={href} className={classNames}>
       {children}
     </Link>
-  );
-
-  return (
-    <motion.div
-      whileHover={reduce ? undefined : { y: -1 }}
-      whileTap={reduce ? undefined : { scale: 0.985 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-      className="inline-flex"
-    >
-      {inner}
-    </motion.div>
   );
 }
