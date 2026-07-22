@@ -6,6 +6,7 @@ Next.js frontend for **Idea Hub** — marketing site + product app.
 
 Parent docs: [../README.md](../README.md) · [../docs/](../docs/)
 
+
 ---
 
 ## Stack
