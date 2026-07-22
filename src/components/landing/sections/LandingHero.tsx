@@ -35,7 +35,7 @@ export function LandingHero() {
       if (!cancelled) setShowVisual(true);
     };
 
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    if (typeof window.requestIdleCallback === 'function') {
       const id = window.requestIdleCallback(enable, { timeout: 1800 });
       return () => {
         cancelled = true;
@@ -43,10 +43,10 @@ export function LandingHero() {
       };
     }
 
-    const t = window.setTimeout(enable, 120);
+    const t = setTimeout(enable, 120);
     return () => {
       cancelled = true;
-      window.clearTimeout(t);
+      clearTimeout(t);
     };
   }, []);
 
