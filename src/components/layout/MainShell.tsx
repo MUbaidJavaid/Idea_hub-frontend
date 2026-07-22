@@ -17,6 +17,7 @@ import { CreateIdeaModal } from '@/components/feed/CreateIdeaModal';
 import { StreakCounter } from '@/components/gamification/StreakCounter';
 import { WeeklyChallenge } from '@/components/gamification/WeeklyChallenge';
 import { Navbar } from '@/components/layout/Navbar';
+import { FirebaseAuthBridge } from '@/components/providers/FirebaseAuthBridge';
 import { cn } from '@/components/ui/cn';
 import { useMyProgress } from '@/hooks/useGamification';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -352,6 +353,7 @@ export function MainShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-dvh max-h-dvh min-h-0 min-w-0 flex-col overflow-hidden bg-[var(--bg)] text-[var(--text)]">
+      <FirebaseAuthBridge />
       <div className="flex min-h-0 min-w-0 flex-1 justify-center overflow-hidden">
         {/* Left — full */}
         <aside className="fixed left-0 top-0 z-30 hidden w-[280px] flex-col border-r border-[var(--lh-line)] bg-[var(--lh-bg)] pt-2 xl:top-16 xl:flex xl:h-[calc(100dvh-4rem)]">

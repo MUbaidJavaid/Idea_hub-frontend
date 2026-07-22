@@ -3,7 +3,6 @@ import { Geist, Syne } from 'next/font/google';
 
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { AppToaster } from '@/components/providers/AppToaster';
-import { FirebaseAuthBridge } from '@/components/providers/FirebaseAuthBridge';
 import { QueryProvider } from '@/components/providers/QueryProvider';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
@@ -18,7 +17,7 @@ const geist = Geist({
 const syne = Syne({
   subsets: ['latin'],
   variable: '--font-display',
-  display: 'swap',
+  display: 'optional',
   weight: ['500', '600', '700', '800'],
 });
 
@@ -74,7 +73,6 @@ export default function RootLayout({
       <body className="min-h-screen font-sans antialiased">
         <ThemeProvider>
           <QueryProvider>
-            <FirebaseAuthBridge />
             <ErrorBoundary>{children}</ErrorBoundary>
             <AppToaster />
           </QueryProvider>

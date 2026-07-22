@@ -1,7 +1,11 @@
-'use client';
-
-import { LandingHomePage } from '@/components/landing/LandingHomePage';
+import { LandingBelowFold } from '@/components/landing/LandingBelowFold';
+import { LandingHero } from '@/components/landing/sections/LandingHero';
 
 export default function LandingPage() {
-  return <LandingHomePage />;
+  return (
+    <>
+      <LandingHero />
+      <LandingBelowFold />
+    </>
+  );
 }

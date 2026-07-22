@@ -1,55 +1,9 @@
-'use client';
-
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
-
 import { LANDING_LOTTIE } from '@/data/landing-lottie';
 
 import { LandingButton } from '../LandingButton';
-
-const LottiePlayer = dynamic(
-  () =>
-    import('../LottiePlayer').then((m) => ({ default: m.LottiePlayer })),
-  {
-    ssr: false,
-    loading: () => (
-      <div
-        className="aspect-square w-full max-w-[640px] md:max-w-[720px] lg:max-w-[780px]"
-        aria-hidden
-        style={{
-          background:
-            'radial-gradient(ellipse at center, rgba(15,118,110,0.08), transparent 70%)',
-        }}
-      />
-    ),
-  }
-);
+import { HeroVisual } from './HeroVisual';
 
 export function LandingHero() {
-  // Defer Lottie until after first paint so hero copy can be LCP without waiting on animation JS.
-  const [showVisual, setShowVisual] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    const enable = () => {
-      if (!cancelled) setShowVisual(true);
-    };
-
-    if (typeof window.requestIdleCallback === 'function') {
-      const id = window.requestIdleCallback(enable, { timeout: 1800 });
-      return () => {
-        cancelled = true;
-        window.cancelIdleCallback(id);
-      };
-    }
-
-    const t = setTimeout(enable, 120);
-    return () => {
-      cancelled = true;
-      clearTimeout(t);
-    };
-  }, []);
-
   return (
     <section
       className="relative min-h-[100svh] overflow-hidden pt-24 md:pt-28"
@@ -66,7 +20,6 @@ export function LandingHero() {
 
       <div className="landing-container relative grid min-h-[calc(100svh-6rem)] items-center gap-10 pb-16 lg:grid-cols-[0.95fr_1.15fr] lg:gap-6 lg:pb-24">
         <div className="max-w-2xl">
-          {/* Static above-the-fold copy — never start at opacity:0 (kills mobile LCP). */}
           <p className="landing-display text-[clamp(2.75rem,8vw,5.5rem)] font-bold text-[var(--lh-ink)]">
             Idea Hub
           </p>
@@ -92,7 +45,10 @@ export function LandingHero() {
 
           <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[var(--lh-muted)]">
             <span className="inline-flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-[var(--lh-accent)]" aria-hidden />
+              <span
+                className="h-1.5 w-1.5 rounded-full bg-[var(--lh-accent)]"
+                aria-hidden
+              />
               Trusted by 12,000+ builders
             </span>
             <span>Free to start · No credit card</span>
@@ -100,22 +56,7 @@ export function LandingHero() {
         </div>
 
         <div className="relative mx-auto flex w-full items-center justify-center lg:origin-center lg:scale-110 lg:justify-end">
-          {showVisual ? (
-            <LottiePlayer
-              src={LANDING_LOTTIE.hero}
-              className="aspect-square w-full max-w-[640px] md:max-w-[720px] lg:max-w-[780px]"
-              aria-label="Abstract animation of ideas forming and connecting"
-            />
-          ) : (
-            <div
-              className="aspect-square w-full max-w-[640px] md:max-w-[720px] lg:max-w-[780px]"
-              aria-hidden
-              style={{
-                background:
-                  'radial-gradient(ellipse at center, rgba(15,118,110,0.08), transparent 70%)',
-              }}
-            />
-          )}
+          <HeroVisual src={LANDING_LOTTIE.hero} />
         </div>
       </div>
 

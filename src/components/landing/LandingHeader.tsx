@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 import { IdeaHubLogo } from '@/components/brand/IdeaHubLogo';
 
@@ -20,7 +19,6 @@ const nav = [
 export function LandingHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const reduce = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -96,64 +94,52 @@ export function LandingHeader() {
         </div>
       </div>
 
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            id="mobile-nav"
-            className="fixed inset-0 z-50 bg-[var(--lh-bg)] lg:hidden"
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <div className="landing-container flex h-16 items-center justify-between">
-              <IdeaHubLogo size={30} />
-              <button
-                type="button"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--lh-line)]"
+      {open ? (
+        <div
+          id="mobile-nav"
+          className="fixed inset-0 z-50 bg-[var(--lh-bg)] lg:hidden"
+        >
+          <div className="landing-container flex h-16 items-center justify-between">
+            <IdeaHubLogo size={30} />
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--lh-line)]"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <nav className="landing-container flex flex-col gap-1 pt-8" aria-label="Mobile">
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
                 onClick={() => setOpen(false)}
-                aria-label="Close menu"
+                className="landing-display block py-3 text-3xl font-semibold tracking-tight text-[var(--lh-ink)]"
               >
-                <X className="h-5 w-5" />
-              </button>
+                {item.label}
+              </Link>
+            ))}
+            <div className="mt-10 flex flex-col gap-3">
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="inline-flex h-12 items-center justify-center rounded-full border border-[var(--lh-line)] text-sm font-medium"
+              >
+                Log in
+              </Link>
+              <Link
+                href="/register"
+                onClick={() => setOpen(false)}
+                className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--lh-ink)] text-sm font-medium text-[var(--lh-bg)]"
+              >
+                Get started
+              </Link>
             </div>
-            <nav className="landing-container flex flex-col gap-1 pt-8" aria-label="Mobile">
-              {nav.map((item, i) => (
-                <motion.div
-                  key={item.href}
-                  initial={reduce ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.04 * i }}
-                >
-                  <Link
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="landing-display block py-3 text-3xl font-semibold tracking-tight text-[var(--lh-ink)]"
-                  >
-                    {item.label}
-                  </Link>
-                </motion.div>
-              ))}
-              <div className="mt-10 flex flex-col gap-3">
-                <Link
-                  href="/login"
-                  onClick={() => setOpen(false)}
-                  className="inline-flex h-12 items-center justify-center rounded-full border border-[var(--lh-line)] text-sm font-medium"
-                >
-                  Log in
-                </Link>
-                <Link
-                  href="/register"
-                  onClick={() => setOpen(false)}
-                  className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--lh-ink)] text-sm font-medium text-[var(--lh-bg)]"
-                >
-                  Get started
-                </Link>
-              </div>
-            </nav>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+          </nav>
+        </div>
+      ) : null}
     </header>
   );
 }

@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
@@ -29,10 +27,11 @@ export function LandingButton({
   className = '',
   external,
 }: LandingButtonProps) {
-  const base =
-    'landing-btn inline-flex min-h-[48px] items-center justify-center rounded-full px-7 text-sm font-medium tracking-tight transition-[transform,colors] duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--lh-bg)] hover:-translate-y-px active:scale-[0.985]';
-
-  const classNames = `${base} ${styles[variant]} ${className}`;
+  const classNames = [
+    'landing-btn inline-flex min-h-[48px] items-center justify-center rounded-full px-7 text-sm font-medium tracking-tight transition-[transform,colors] duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--lh-bg)] hover:-translate-y-px active:scale-[0.985]',
+    styles[variant],
+    className,
+  ].join(' ');
 
   if (external) {
     return (
