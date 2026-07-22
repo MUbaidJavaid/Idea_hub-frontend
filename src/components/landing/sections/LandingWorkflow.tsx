@@ -71,21 +71,19 @@ export function LandingWorkflow() {
 
           <ol className="grid gap-12 md:grid-cols-5 md:gap-6">
             {STEPS.map((step, i) => (
-              <Reveal key={step.n} delay={i * 0.06}>
-                <li className="relative">
-                  <span
-                    className="relative z-10 mb-6 flex h-6 w-6 items-center justify-center rounded-full border border-[var(--lh-ink)] bg-[var(--lh-bg)] text-[10px] font-semibold"
-                    aria-hidden
-                  >
-                    {step.n}
-                  </span>
-                  <h3 className="landing-display text-xl font-semibold md:text-2xl">
-                    {step.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-[var(--lh-muted)]">
-                    {step.body}
-                  </p>
-                </li>
+              <Reveal key={step.n} as="li" className="relative" delay={i * 0.06}>
+                <span
+                  className="relative z-10 mb-6 flex h-6 w-6 items-center justify-center rounded-full border border-[var(--lh-ink)] bg-[var(--lh-bg)] text-[10px] font-semibold"
+                  aria-hidden
+                >
+                  {step.n}
+                </span>
+                <h3 className="landing-display text-xl font-semibold md:text-2xl">
+                  {step.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--lh-muted)]">
+                  {step.body}
+                </p>
               </Reveal>
             ))}
           </ol>

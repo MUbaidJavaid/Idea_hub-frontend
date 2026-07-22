@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/Input';
 import { cn } from '@/components/ui/cn';
 import { usersApi } from '@/lib/api/users.api';
 import { createGroupChat } from '@/lib/chat';
+import { ensureFirebaseAuth } from '@/lib/firebase-auth';
 import { tryGetFirebaseDb } from '@/lib/firebase.client';
 import { pushWithViewTransition } from '@/lib/viewTransitions';
 import { useAuthStore } from '@/store/authStore';
@@ -166,6 +167,7 @@ function NewGroupContent() {
       const db = tryGetFirebaseDb();
       if (!db) throw new Error('Firebase is not configured.');
       if (!me) throw new Error('Not signed in.');
+      await ensureFirebaseAuth(me._id);
       const trimmed = name.trim();
       if (!trimmed) throw new Error('Enter a group name.');
       if (members.length < 1) {

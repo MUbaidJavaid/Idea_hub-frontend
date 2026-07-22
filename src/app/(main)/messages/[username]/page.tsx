@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/Input';
 import { cn } from '@/components/ui/cn';
 import { usersApi } from '@/lib/api/users.api';
 import { chatIdFor, markChatRead, sendChatMessage, type ChatMessage } from '@/lib/chat';
+import { ensureFirebaseAuth } from '@/lib/firebase-auth';
 import {
   hasFirebaseClientConfig,
   missingFirebaseClientConfigKeys,
@@ -69,15 +70,25 @@ function ChatContent() {
     if (!me || !peer || !chatId) return;
     const db = tryGetFirebaseDb();
     if (!db) return;
-    const r = ref(db, `chats/${chatId}/messages`);
-    return onValue(r, (snap) => {
-      const v = (snap.val() ?? {}) as Record<string, ChatMessage>;
-      const list = Object.values(v)
-        .filter(Boolean)
-        .sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0));
-      setMessages(list);
-      void markChatRead(db, me._id, chatId);
-    });
+    let unsub: (() => void) | undefined;
+    void ensureFirebaseAuth(me._id)
+      .then(() => {
+        const r = ref(db, `chats/${chatId}/messages`);
+        unsub = onValue(r, (snap) => {
+          const v = (snap.val() ?? {}) as Record<string, ChatMessage>;
+          const list = Object.values(v)
+            .filter(Boolean)
+            .sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0));
+          setMessages(list);
+          void markChatRead(db, me._id, chatId);
+        });
+      })
+      .catch((err) => {
+        console.error('[chat] firebase auth / listen failed', err);
+      });
+    return () => {
+      unsub?.();
+    };
   }, [chatId, me?._id, peer?._id]);
 
   useEffect(() => {
@@ -92,10 +103,18 @@ function ChatContent() {
       return;
     }
     try {
+      await ensureFirebaseAuth(me._id);
       await sendChatMessage(db, me, peer, text);
       setText('');
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Could not send message';
+      const err = e as { code?: string; message?: string };
+      const msg =
+        err?.code === 'PERMISSION_DENIED' ||
+        /PERMISSION_DENIED/i.test(String(err?.message ?? e))
+          ? 'Permission denied — sign in again, or publish Firebase RTDB rules from Idea_hub-backend/database.rules.json'
+          : e instanceof Error
+            ? e.message
+            : 'Could not send message';
       console.error('[chat] send failed', e);
       toast.error(msg);
     }

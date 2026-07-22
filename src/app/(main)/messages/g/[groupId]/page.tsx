@@ -19,6 +19,7 @@ import {
   type GroupChatMeta,
   type GroupMemberPreview,
 } from '@/lib/chat';
+import { ensureFirebaseAuth } from '@/lib/firebase-auth';
 import {
   hasFirebaseClientConfig,
   missingFirebaseClientConfigKeys,
@@ -125,18 +126,24 @@ function GroupChatContent() {
   }, [meta?.memberIds, memberById]);
 
   useEffect(() => {
-    if (!groupId) return;
+    if (!groupId || !me) return;
     const db = tryGetFirebaseDb();
     if (!db) {
       setMetaLoading(false);
       return;
     }
-    const r = ref(db, `chats/${groupId}/meta`);
-    return onValue(r, (snap) => {
-      setMetaLoading(false);
-      setMeta(snap.exists() ? (snap.val() as GroupChatMeta) : null);
-    });
-  }, [groupId]);
+    let unsub: (() => void) | undefined;
+    void ensureFirebaseAuth(me._id)
+      .then(() => {
+        const r = ref(db, `chats/${groupId}/meta`);
+        unsub = onValue(r, (snap) => {
+          setMetaLoading(false);
+          setMeta(snap.exists() ? (snap.val() as GroupChatMeta) : null);
+        });
+      })
+      .catch(() => setMetaLoading(false));
+    return () => unsub?.();
+  }, [groupId, me?._id]);
 
   const allowed = useMemo(() => {
     if (!me || !meta?.memberIds?.length) return false;
@@ -148,15 +155,19 @@ function GroupChatContent() {
     if (!me || !groupId || !allowed) return;
     const db = tryGetFirebaseDb();
     if (!db) return;
-    const r = ref(db, `chats/${groupId}/messages`);
-    return onValue(r, (snap) => {
-      const v = (snap.val() ?? {}) as Record<string, ChatMessage>;
-      const list = Object.values(v)
-        .filter(Boolean)
-        .sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0));
-      setMessages(list);
-      void markChatRead(db, me._id, groupId);
+    let unsub: (() => void) | undefined;
+    void ensureFirebaseAuth(me._id).then(() => {
+      const r = ref(db, `chats/${groupId}/messages`);
+      unsub = onValue(r, (snap) => {
+        const v = (snap.val() ?? {}) as Record<string, ChatMessage>;
+        const list = Object.values(v)
+          .filter(Boolean)
+          .sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0));
+        setMessages(list);
+        void markChatRead(db, me._id, groupId);
+      });
     });
+    return () => unsub?.();
   }, [allowed, groupId, me?._id]);
 
   useEffect(() => {
@@ -171,6 +182,7 @@ function GroupChatContent() {
       return;
     }
     try {
+      await ensureFirebaseAuth(me._id);
       await sendGroupMessage(
         db,
         groupId,
@@ -182,8 +194,9 @@ function GroupChatContent() {
     } catch (e) {
       const err = e as { code?: string; message?: string };
       const msg =
-        err?.code === 'PERMISSION_DENIED'
-          ? 'Permission denied — check Firebase Realtime Database rules for userChats and chats.'
+        err?.code === 'PERMISSION_DENIED' ||
+        /PERMISSION_DENIED/i.test(String(err?.message ?? e))
+          ? 'Permission denied — publish Idea_hub-backend/database.rules.json in Firebase RTDB, and enable Authentication.'
           : err?.message && typeof err.message === 'string'
             ? err.message
             : 'Could not send message';

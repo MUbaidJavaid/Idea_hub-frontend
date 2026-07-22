@@ -15,6 +15,7 @@ import {
   missingFirebaseClientConfigKeys,
   tryGetFirebaseDb,
 } from '@/lib/firebase.client';
+import { ensureFirebaseAuth } from '@/lib/firebase-auth';
 import type { ChatThreadRow } from '@/lib/chat';
 import { useAuthStore } from '@/store/authStore';
 
@@ -35,14 +36,18 @@ function MessagesContent() {
     if (!me) return;
     const db = tryGetFirebaseDb();
     if (!db) return;
-    const r = ref(db, `userChats/${me._id}`);
-    return onValue(r, (snap) => {
-      const v = (snap.val() ?? {}) as Record<string, ChatThreadRow>;
-      const list = Object.values(v)
-        .filter(Boolean)
-        .sort((a, b) => (b.lastAt ?? 0) - (a.lastAt ?? 0));
-      setRows(list);
+    let unsub: (() => void) | undefined;
+    void ensureFirebaseAuth(me._id).then(() => {
+      const r = ref(db, `userChats/${me._id}`);
+      unsub = onValue(r, (snap) => {
+        const v = (snap.val() ?? {}) as Record<string, ChatThreadRow>;
+        const list = Object.values(v)
+          .filter(Boolean)
+          .sort((a, b) => (b.lastAt ?? 0) - (a.lastAt ?? 0));
+        setRows(list);
+      });
     });
+    return () => unsub?.();
   }, [me?._id]);
 
   const filtered = useMemo(() => {

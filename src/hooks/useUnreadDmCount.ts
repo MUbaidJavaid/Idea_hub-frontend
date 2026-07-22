@@ -4,6 +4,7 @@ import { onValue, ref } from 'firebase/database';
 import { useEffect, useState } from 'react';
 
 import { tryGetFirebaseDb } from '@/lib/firebase.client';
+import { ensureFirebaseAuth } from '@/lib/firebase-auth';
 import type { ChatThreadRow } from '@/lib/chat';
 import { useAuthStore } from '@/store/authStore';
 
@@ -20,16 +21,20 @@ export function useUnreadDmCount(): number {
     const db = tryGetFirebaseDb();
     if (!db) return;
 
-    const r = ref(db, `userChats/${me._id}`);
-    return onValue(r, (snap) => {
-      const v = (snap.val() ?? {}) as Record<string, ChatThreadRow>;
-      let sum = 0;
-      for (const row of Object.values(v)) {
-        if (!row) continue;
-        sum += Number(row.unreadCount ?? 0);
-      }
-      setTotal(sum);
+    let unsub: (() => void) | undefined;
+    void ensureFirebaseAuth(me._id).then(() => {
+      const r = ref(db, `userChats/${me._id}`);
+      unsub = onValue(r, (snap) => {
+        const v = (snap.val() ?? {}) as Record<string, ChatThreadRow>;
+        let sum = 0;
+        for (const row of Object.values(v)) {
+          if (!row) continue;
+          sum += Number(row.unreadCount ?? 0);
+        }
+        setTotal(sum);
+      });
     });
+    return () => unsub?.();
   }, [me?._id]);
 
   return total;

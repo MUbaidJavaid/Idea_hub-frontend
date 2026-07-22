@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 
 import { authApi } from '@/lib/api/auth.api';
 import { getApiError } from '@/lib/api/axios';
+import { clearFirebaseAuth } from '@/lib/firebase-auth';
 import { useAuthStore } from '@/store/authStore';
 
 export function useAuth() {
@@ -59,6 +60,7 @@ export function useAuth() {
     } catch {
       /* ignore */
     } finally {
+      await clearFirebaseAuth();
       store.logout();
       queryClient.clear();
       router.push('/login');

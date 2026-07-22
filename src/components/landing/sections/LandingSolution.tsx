@@ -96,16 +96,27 @@ export function LandingSolution() {
                     reduce
                       ? undefined
                       : {
-                          opacity: active === i ? 1 : 0.35,
                           x: active === i ? 0 : 8,
                         }
                   }
                   transition={{ duration: 0.35 }}
                 >
-                  <p className="text-xs font-medium tracking-[0.16em] text-[var(--lh-accent)]">
+                  <p
+                    className={`text-xs font-medium tracking-[0.16em] ${
+                      active === i
+                        ? 'text-[var(--lh-accent)]'
+                        : 'text-[var(--lh-muted)]'
+                    }`}
+                  >
                     {String(i + 1).padStart(2, '0')}
                   </p>
-                  <h3 className="landing-display mt-4 text-3xl font-semibold md:text-4xl">
+                  <h3
+                    className={`landing-display mt-4 text-3xl font-semibold md:text-4xl ${
+                      active === i
+                        ? 'text-[var(--lh-ink)]'
+                        : 'text-[var(--lh-ink-soft)]'
+                    }`}
+                  >
                     {beat.title}
                   </h3>
                   <p className="mt-4 max-w-md text-base leading-relaxed text-[var(--lh-muted)] md:text-lg">

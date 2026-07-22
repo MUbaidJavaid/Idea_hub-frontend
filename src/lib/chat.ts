@@ -42,6 +42,8 @@ export type GroupChatMeta = {
   type: 'group';
   name: string;
   memberIds: string[];
+  /** uid → true — used by RTDB security rules */
+  membersMap?: Record<string, boolean>;
   /** Profile snapshots for member list + fallbacks (optional on older groups). */
   members?: GroupMemberPreview[];
   createdBy: string;
@@ -160,6 +162,7 @@ export async function createGroupChat(
     name: trimmed,
     memberIds,
     members: membersPreview,
+    membersMap: Object.fromEntries(memberIds.map((id) => [id, true])),
     createdBy: creator._id,
     createdAt: now,
   };

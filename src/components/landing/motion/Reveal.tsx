@@ -3,12 +3,16 @@
 import { motion, useReducedMotion, type HTMLMotionProps } from 'framer-motion';
 import type { ReactNode } from 'react';
 
+type RevealAs = 'div' | 'li';
+
 type RevealProps = {
   children: ReactNode;
   className?: string;
   delay?: number;
   y?: number;
   once?: boolean;
+  /** Use `li` when Reveal is a direct child of `ul`/`ol` so list structure stays valid. */
+  as?: RevealAs;
 } & Omit<HTMLMotionProps<'div'>, 'children'>;
 
 export function Reveal({
@@ -17,20 +21,24 @@ export function Reveal({
   delay = 0,
   y = 28,
   once = true,
+  as = 'div',
   ...rest
 }: RevealProps) {
   const reduce = useReducedMotion();
+  const MotionTag = as === 'li' ? motion.li : motion.div;
+  const StaticTag = as === 'li' ? 'li' : 'div';
 
   if (reduce) {
+    const Tag = StaticTag;
     return (
-      <div className={className} {...(rest as object)}>
+      <Tag className={className} {...(rest as object)}>
         {children}
-      </div>
+      </Tag>
     );
   }
 
   return (
-    <motion.div
+    <MotionTag
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -43,6 +51,6 @@ export function Reveal({
       {...rest}
     >
       {children}
-    </motion.div>
+    </MotionTag>
   );
 }
